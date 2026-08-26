@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from typing import Any, Callable, Mapping, Sequence
 import math
+from collections.abc import Callable, Mapping, Sequence
+from typing import Any
 
 import numpy as np
 import pandas as pd

@@ -1,7 +1,10 @@
 """Adverse-event preparation and safety summaries."""
 
 from __future__ import annotations
-from typing import Any, Mapping, Sequence
+
+from collections.abc import Mapping, Sequence
+from typing import Any
+
 import numpy as np
 import pandas as pd
 

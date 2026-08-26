@@ -8,12 +8,15 @@ uppercase six-digit hexadecimal strings.
 """
 
 from __future__ import annotations
-from dataclasses import dataclass, field, replace
-from pathlib import Path
-from typing import Any, Iterable, Mapping
+
 import colorsys
 import importlib.util
 import math
+from collections.abc import Iterable, Mapping
+from dataclasses import dataclass, field, replace
+from pathlib import Path
+from typing import Any
+
 import numpy as np
 
 from starlibpy.exceptions import OptionalDependencyError

@@ -14,8 +14,11 @@ statsmodels, Patsy, NumPy, pandas, SciPy, and scikit-learn contributors.
 """
 
 from __future__ import annotations
-from typing import Any, Mapping, Sequence
+
 import importlib.util
+from collections.abc import Mapping, Sequence
+from typing import Any
+
 import numpy as np
 import pandas as pd
 from scipy import stats

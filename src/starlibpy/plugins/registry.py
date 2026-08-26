@@ -1,9 +1,11 @@
 """Extension registry for complementary Starlibpy modules."""
 
 from __future__ import annotations
+
+from collections.abc import Callable, Mapping
 from dataclasses import dataclass, field
 from importlib import metadata
-from typing import Any, Callable, Mapping
+from typing import Any
 
 _ANALYSES: dict[str, Callable[..., Any]] = {}
 _RESULT_TYPES: dict[str, type] = {}

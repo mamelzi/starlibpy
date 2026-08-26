@@ -1,10 +1,14 @@
 """Automatic Matplotlib renderers selected by result type and plot kind."""
 
 from __future__ import annotations
+
 from typing import Any
+
 import numpy as np
 import pandas as pd
+
 from starlibpy.results import StarFigure
+
 from .registry import get_plot_renderer, register_plot_renderer
 from .templates import get_plot_template, get_theme
 

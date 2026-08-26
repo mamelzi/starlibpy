@@ -1,6 +1,7 @@
 """Named result subclasses used for renderer dispatch."""
 
 from dataclasses import dataclass
+
 from .base import StarResult
 
 

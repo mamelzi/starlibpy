@@ -1,11 +1,15 @@
 """Design-aware bootstrap, permutation, exact, and sensitivity analyses."""
 
 from __future__ import annotations
-from typing import Any, Callable, Iterable, Sequence
+
 import itertools
+from collections.abc import Callable, Iterable, Sequence
+from typing import Any
+
 import numpy as np
 import pandas as pd
 from scipy import stats
+
 from starlibpy.results import ResamplingResult, StarResult
 
 

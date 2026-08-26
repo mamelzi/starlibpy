@@ -1,13 +1,17 @@
 """Multi-result report assembly."""
 
 from __future__ import annotations
+
+from collections.abc import Sequence
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any, Sequence
+from typing import Any
+
 from starlibpy.results import StarFigure, StarTable
-from .tables import render_table
+
+from .exporters import export_plot, export_table
 from .plots import plot_result
-from .exporters import export_table, export_plot
+from .tables import render_table
 
 
 @dataclass

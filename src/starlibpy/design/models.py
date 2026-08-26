@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
+import math
+from collections.abc import Mapping, Sequence
 from copy import deepcopy
 from dataclasses import asdict, dataclass, field
-from typing import Any, Mapping, Sequence
-import math
+from typing import Any
 
 import pandas as pd
 

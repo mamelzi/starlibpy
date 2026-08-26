@@ -4,9 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-
 import starlibpy.design as design
-
 from starlibpy.data import create_analysis_dataset, profile_dataset, validate_dataset
 
 

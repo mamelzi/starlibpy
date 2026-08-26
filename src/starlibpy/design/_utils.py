@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from datetime import date, datetime
-from pathlib import Path
-from typing import Any, Iterable, Mapping, Sequence
 import math
 import re
+from collections.abc import Iterable, Mapping, Sequence
+from datetime import date, datetime
+from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pandas as pd

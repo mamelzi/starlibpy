@@ -1,8 +1,11 @@
 """Diagnostic accuracy, ROC, calibration, and prediction validation."""
 
 from __future__ import annotations
-from typing import Any, Iterable, Mapping, Sequence
+
 import warnings
+from collections.abc import Iterable, Mapping, Sequence
+from typing import Any
+
 import numpy as np
 import pandas as pd
 from scipy import stats
@@ -170,7 +173,7 @@ def confusion_matrix_analysis(
     normalize: str | None = None,
 ) -> ConfusionMatrixResult:
     """Build a binary or multiclass confusion matrix and per-class metrics."""
-    from sklearn.metrics import confusion_matrix, precision_recall_fscore_support, accuracy_score
+    from sklearn.metrics import accuracy_score, confusion_matrix, precision_recall_fscore_support
 
     df = pd.DataFrame({"truth": y_true, "pred": y_pred}).dropna()
     labels = list(labels) if labels is not None else sorted(set(df.truth) | set(df.pred), key=str)
@@ -254,7 +257,7 @@ def roc_analysis(
     random_state: int | None = None,
 ) -> RocResult:
     """Estimate a ROC curve, AUC, interval, and threshold performance."""
-    from sklearn.metrics import roc_curve, roc_auc_score
+    from sklearn.metrics import roc_auc_score, roc_curve
 
     df = pd.DataFrame({"truth": y_true, "score": scores}).dropna()
     y = (df.truth == positive_class).astype(int).to_numpy()
@@ -519,13 +522,13 @@ def validate_prediction_model(
     random_state: int | None = None,
 ) -> PredictionValidationResult:
     """Perform cross-validated internal validation for a scikit-learn-compatible estimator."""
-    from sklearn.model_selection import StratifiedKFold, KFold, cross_val_predict
     from sklearn.metrics import (
-        roc_auc_score,
         brier_score_loss,
-        mean_squared_error,
         mean_absolute_error,
+        mean_squared_error,
+        roc_auc_score,
     )
+    from sklearn.model_selection import KFold, StratifiedKFold, cross_val_predict
 
     y = np.asarray(y)
     splitter = (

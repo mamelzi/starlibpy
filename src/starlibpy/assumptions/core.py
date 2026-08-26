@@ -5,7 +5,10 @@ Project Author: Dr. M.A. Melzi, MD
 """
 
 from __future__ import annotations
-from typing import Any, Iterable, Sequence
+
+from collections.abc import Iterable, Sequence
+from typing import Any
+
 import numpy as np
 import pandas as pd
 from scipy import stats
@@ -375,8 +378,8 @@ def check_independence_structure(
 def check_regression_assumptions(model: Any, *, alpha: float = 0.05) -> AssumptionReport:
     """Assess common ordinary least-squares diagnostics from a fitted statsmodels model."""
     from statsmodels.stats.diagnostic import het_breuschpagan, het_white, linear_reset
-    from statsmodels.stats.stattools import durbin_watson, jarque_bera
     from statsmodels.stats.outliers_influence import variance_inflation_factor
+    from statsmodels.stats.stattools import durbin_watson, jarque_bera
 
     checks = []
     resid = np.asarray(model.resid)

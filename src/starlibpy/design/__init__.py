@@ -15,6 +15,7 @@ from .analysis import (
     list_compatible_analyses,
     recommend_analysis,
 )
+from .constants import *  # re-export controlled vocabularies
 from .inference import infer_study_design, infer_variable_types
 from .io import export_design, load_design
 from .models import (
@@ -54,7 +55,6 @@ from .validation import (
     validate_study_design,
     validate_variable_spec,
 )
-from .constants import *  # re-export controlled vocabularies
 
 __version__ = "0.3.0b1"
 

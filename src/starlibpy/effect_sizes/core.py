@@ -5,13 +5,15 @@ Project Author: Dr. M.A. Melzi, MD.
 
 from __future__ import annotations
 
-from typing import Any, Iterable
+from collections.abc import Iterable
+from typing import Any
+
 import numpy as np
 import pandas as pd
 from scipy import stats
 
-from starlibpy.results import EffectSizeResult
 from starlibpy.estimation import ci_odds_ratio, ci_risk_ratio
+from starlibpy.results import EffectSizeResult
 
 
 def _arr(x: Iterable[Any]) -> np.ndarray:

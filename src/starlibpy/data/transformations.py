@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
-from calendar import monthrange
-from typing import Any, Iterable, Mapping, Sequence
 import math
 import unicodedata
+from calendar import monthrange
+from collections.abc import Iterable, Mapping, Sequence
+from typing import Any
 
 import numpy as np
 import pandas as pd

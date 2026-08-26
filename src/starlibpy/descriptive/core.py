@@ -14,11 +14,15 @@ NumPy, pandas, SciPy, and statsmodels development teams.
 """
 
 from __future__ import annotations
-from typing import Any, Iterable, Mapping, Sequence
+
+from collections.abc import Iterable, Mapping, Sequence
+from typing import Any
+
 import numpy as np
 import pandas as pd
 from scipy import stats
 
+from starlibpy.effect_sizes import calculate_standardized_difference
 from starlibpy.estimation import ci_mean, ci_median, ci_proportion
 from starlibpy.results import (
     BaselineBalanceResult,
@@ -33,7 +37,6 @@ from starlibpy.results import (
     GroupedSummaryResult,
     TableOneResult,
 )
-from starlibpy.effect_sizes import calculate_standardized_difference
 
 
 def _as_frame(

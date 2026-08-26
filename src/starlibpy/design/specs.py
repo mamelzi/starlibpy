@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping, Sequence
 from dataclasses import asdict, dataclass, field, replace
-from typing import Any, Mapping, Sequence
+from typing import Any
 
 from ._utils import as_string_tuple, as_tuple, json_safe, validate_choice
 from .constants import VALID_STATISTICAL_TYPES, VALID_VARIABLE_ROLES

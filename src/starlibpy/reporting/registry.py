@@ -1,7 +1,10 @@
 """Renderer registries that support third-party extensions."""
 
 from __future__ import annotations
-from typing import Any, Callable
+
+from collections.abc import Callable
+from typing import Any
+
 from starlibpy.exceptions import RendererNotFoundError
 
 _TABLE_RENDERERS: dict[str, Callable[..., Any]] = {}

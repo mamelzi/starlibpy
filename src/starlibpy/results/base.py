@@ -11,11 +11,12 @@ Dr. M.A. Melzi, MD
 
 from __future__ import annotations
 
+from collections.abc import Iterator, Mapping
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from importlib import metadata as importlib_metadata
 from pathlib import Path
-from typing import Any, Iterator, Mapping
+from typing import Any
 
 import numpy as np
 import pandas as pd

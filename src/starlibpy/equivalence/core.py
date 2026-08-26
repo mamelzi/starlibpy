@@ -9,12 +9,16 @@ Schuirmann DJ. J Pharmacokinet Biopharm. 1987;15:657-680.
 """
 
 from __future__ import annotations
-from typing import Any, Iterable
+
+from collections.abc import Iterable
+from typing import Any
+
 import numpy as np
 import pandas as pd
 from scipy import stats
-from starlibpy.results import EquivalenceResult, NonInferiorityResult
+
 from starlibpy.estimation import ci_difference_means, ci_difference_proportions
+from starlibpy.results import EquivalenceResult, NonInferiorityResult
 
 
 def _numeric(x: Iterable[Any]) -> np.ndarray:

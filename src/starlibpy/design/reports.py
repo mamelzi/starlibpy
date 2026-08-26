@@ -7,13 +7,12 @@ from typing import Any
 
 import pandas as pd
 
-from ._utils import json_safe
+from ._utils import json_safe, validate_choice, validate_probability
 from .constants import (
     VALID_ISSUE_SEVERITIES,
     VALID_PROVENANCE_SOURCES,
     VALID_PROVENANCE_STATUSES,
 )
-from ._utils import validate_choice, validate_probability
 
 
 @dataclass(slots=True)

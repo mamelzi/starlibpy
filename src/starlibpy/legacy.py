@@ -1,6 +1,7 @@
 """Deprecated compatibility aliases for the pre-restructuring API."""
 
 from __future__ import annotations
+
 import warnings
 
 

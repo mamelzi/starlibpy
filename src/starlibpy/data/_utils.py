@@ -2,15 +2,16 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict, is_dataclass
-from datetime import date, datetime
-from pathlib import Path
-from typing import Any, Iterable, Mapping
 import hashlib
 import json
 import math
 import re
 import unicodedata
+from collections.abc import Iterable, Mapping
+from dataclasses import asdict, is_dataclass
+from datetime import date, datetime
+from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pandas as pd

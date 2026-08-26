@@ -5,14 +5,17 @@ Statistical engines: SciPy and statsmodels.
 """
 
 from __future__ import annotations
-from typing import Any, Iterable, Mapping, Sequence
+
 import itertools
+from collections.abc import Iterable, Mapping, Sequence
+from typing import Any
+
 import numpy as np
 import pandas as pd
 from scipy import stats
 
 from starlibpy.assumptions import recommend_test
-from starlibpy.effect_sizes import effect_size_continuous, effect_size_rank, effect_size_categorical
+from starlibpy.effect_sizes import effect_size_categorical, effect_size_continuous, effect_size_rank
 from starlibpy.estimation import (
     ci_difference_means,
     ci_difference_medians,

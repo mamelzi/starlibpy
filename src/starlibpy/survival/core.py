@@ -12,9 +12,12 @@ Royston P, Parmar MKB. BMC Med Res Methodol. 2013;13:152.
 """
 
 from __future__ import annotations
-from typing import Any, Iterable, Mapping, Sequence
-import numpy as np
+
 import warnings
+from collections.abc import Iterable, Mapping, Sequence
+from typing import Any
+
+import numpy as np
 import pandas as pd
 from scipy import stats
 

@@ -1,11 +1,15 @@
 """Multiplicity control using statsmodels."""
 
 from __future__ import annotations
+
+from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Iterable, Any
+from typing import Any
+
 import numpy as np
 import pandas as pd
 from statsmodels.stats.multitest import multipletests
+
 from starlibpy.results import MultiplicityResult
 
 _METHOD_ALIASES = {

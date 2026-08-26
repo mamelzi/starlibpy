@@ -1,10 +1,13 @@
 """Table, figure, result, and report exporters."""
 
 from __future__ import annotations
+
+import json
 from pathlib import Path
 from typing import Any
-import json
+
 import pandas as pd
+
 from starlibpy.results import StarFigure, StarTable
 
 
@@ -78,8 +81,8 @@ def export_result(
     include_plots: bool = True,
 ) -> Path:
     """Export all declared tables and optional plots to a directory."""
-    from .tables import render_table
     from .plots import plot_result
+    from .tables import render_table
 
     path = Path(path)
     path.mkdir(parents=True, exist_ok=True)

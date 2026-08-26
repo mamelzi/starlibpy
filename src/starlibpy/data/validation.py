@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from collections import defaultdict
-from typing import Any, Callable, Iterable, Mapping, Sequence
 import re
+from collections import defaultdict
+from collections.abc import Callable, Iterable, Mapping, Sequence
+from typing import Any
 
 import numpy as np
 import pandas as pd

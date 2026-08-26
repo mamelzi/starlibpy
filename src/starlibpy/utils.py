@@ -1,7 +1,9 @@
 """General user-facing utilities."""
 
 from __future__ import annotations
+
 import inspect
+
 from ._metadata import PROJECT_AUTHOR, PROJECT_FULL_NAME, PROJECT_IMPORT
 from ._version import __version__
 from .results import software_versions
