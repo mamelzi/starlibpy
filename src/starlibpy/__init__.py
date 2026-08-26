@@ -35,18 +35,18 @@ from . import (
     survival,
 )
 from ._metadata import (
-    PROJECT_AUTHOR as __author__,
+    PROJECT_AUTHOR as _PROJECT_AUTHOR,
 )
 from ._metadata import (
-    PROJECT_DESCRIPTION as __description__,
+    PROJECT_DESCRIPTION as _PROJECT_DESCRIPTION,
 )
 from ._metadata import (
-    PROJECT_FULL_NAME as __project_full_name__,
+    PROJECT_FULL_NAME as _PROJECT_FULL_NAME,
 )
 from ._metadata import (
-    PROJECT_NAME as __project__,
+    PROJECT_NAME as _PROJECT_NAME,
 )
-from ._version import __version__
+from ._version import __version__ as _VERSION
 from .agreement import (
     agreement_analysis,
     bland_altman,
@@ -428,6 +428,12 @@ from .survival import (
     weighted_logrank_test,
 )
 from .utils import about, citation, function_signature
+
+__author__ = _PROJECT_AUTHOR
+__description__ = _PROJECT_DESCRIPTION
+__project_full_name__ = _PROJECT_FULL_NAME
+__project__ = _PROJECT_NAME
+__version__ = _VERSION
 
 __all__ = [
     "AnalysisDesign",
