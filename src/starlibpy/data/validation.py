@@ -238,10 +238,7 @@ def detect_duplicates(
     key_groups = pd.DataFrame()
     if keys:
         key_groups = (
-            data.groupby(list(keys), dropna=False, observed=False)
-            .size()
-            .rename("n")
-            .reset_index()
+            data.groupby(list(keys), dropna=False, observed=False).size().rename("n").reset_index()
         )
         key_groups = key_groups.loc[key_groups["n"] > 1].sort_values("n", ascending=False)
 
@@ -347,7 +344,9 @@ def _design_rules(study_design: Any | None, *, require_declared_variables: bool)
 
 
 def _merge_schema(base: dict[str, Any], schema: Mapping[str, Any] | None) -> dict[str, Any]:
-    result = {key: value.copy() if isinstance(value, dict) else list(value) for key, value in base.items()}
+    result = {
+        key: value.copy() if isinstance(value, dict) else list(value) for key, value in base.items()
+    }
     if not schema:
         return result
     aliases = {
@@ -521,9 +520,7 @@ def validate_dataset(
         mask = data[column].notna() & ~data[column].isin(allowed_set)
         observed_invalid = data.loc[mask, column].value_counts(dropna=False)
         for value, count in observed_invalid.items():
-            allowed_rows.append(
-                {"column": column, "invalid_value": value, "n": int(count)}
-            )
+            allowed_rows.append({"column": column, "invalid_value": value, "n": int(count)})
         if mask.any():
             issues.append(
                 DataQualityIssue(
@@ -674,7 +671,9 @@ def validate_dataset(
         diagnostics={
             "missing_required_columns": tuple(missing_required),
             "n_checks": sum(
-                len(rules.get(key, {})) if isinstance(rules.get(key), Mapping) else len(rules.get(key, []))
+                len(rules.get(key, {}))
+                if isinstance(rules.get(key), Mapping)
+                else len(rules.get(key, []))
                 for key in (
                     "required_columns",
                     "unique",

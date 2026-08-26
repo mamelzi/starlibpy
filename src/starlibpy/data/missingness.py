@@ -48,8 +48,7 @@ def summarize_missingness(
             "n_valid": [int(subset[column].notna().sum()) for column in selected],
             "n_missing": [int(subset[column].isna().sum()) for column in selected],
             "missing_rate": [
-                float(subset[column].isna().mean()) if n_rows else 0.0
-                for column in selected
+                float(subset[column].isna().mean()) if n_rows else 0.0 for column in selected
             ],
         }
     )
@@ -90,9 +89,7 @@ def summarize_missingness(
                 "n_valid": subset.notna().sum(axis=1).to_numpy(),
             }
         )
-        row_table["missing_rate"] = (
-            row_table["n_missing"] / len(selected) if selected else 0.0
-        )
+        row_table["missing_rate"] = row_table["n_missing"] / len(selected) if selected else 0.0
         row_distribution = (
             row_table["n_missing"]
             .value_counts(sort=False)
@@ -101,9 +98,7 @@ def summarize_missingness(
             .rename("n_rows")
             .reset_index()
         )
-        row_distribution["percent"] = (
-            100 * row_distribution["n_rows"] / n_rows if n_rows else 0.0
-        )
+        row_distribution["percent"] = 100 * row_distribution["n_rows"] / n_rows if n_rows else 0.0
 
     group_table = pd.DataFrame()
     if group_columns:
@@ -254,7 +249,9 @@ def analyze_missingness_patterns(
     )
 
 
-def _contingency_missingness(series: pd.Series, group: pd.Series) -> tuple[pd.DataFrame, np.ndarray]:
+def _contingency_missingness(
+    series: pd.Series, group: pd.Series
+) -> tuple[pd.DataFrame, np.ndarray]:
     table = pd.crosstab(group, series.isna(), dropna=False)
     table = table.reindex(columns=[False, True], fill_value=0)
     return table, table.to_numpy()
@@ -300,8 +297,7 @@ def compare_missingness_by_group(
                 }
             )
         group_rates = [
-            row.get(True, 0) / row.sum() if row.sum() else np.nan
-            for _, row in table.iterrows()
+            row.get(True, 0) / row.sum() if row.sum() else np.nan for _, row in table.iterrows()
         ]
         test_name = "not_testable"
         statistic = np.nan
@@ -311,9 +307,8 @@ def compare_missingness_by_group(
             try:
                 chi2, chi_p, _, expected = stats.chi2_contingency(array, correction=False)
                 expected_min = float(expected.min())
-                use_fisher = (
-                    method == "fisher"
-                    or (method == "auto" and array.shape == (2, 2) and expected_min < 5)
+                use_fisher = method == "fisher" or (
+                    method == "auto" and array.shape == (2, 2) and expected_min < 5
                 )
                 if use_fisher:
                     if array.shape != (2, 2):
@@ -355,7 +350,9 @@ def compare_missingness_by_group(
                 "group_variable": group,
                 "n_variables": len(selected),
                 "n_testable": int(tests["p_value"].notna().sum()) if not tests.empty else 0,
-                "n_significant_after_adjustment": int(tests.get("significant", pd.Series(dtype=bool)).sum()),
+                "n_significant_after_adjustment": int(
+                    tests.get("significant", pd.Series(dtype=bool)).sum()
+                ),
                 "correction": correction,
                 "alpha": alpha,
             }
@@ -384,7 +381,9 @@ def _numeric_missingness_association(
     missing_indicator: pd.Series,
     predictor: pd.Series,
 ) -> tuple[str, float, float, float, int]:
-    frame = pd.DataFrame({"missing": missing_indicator, "x": pd.to_numeric(predictor, errors="coerce")}).dropna()
+    frame = pd.DataFrame(
+        {"missing": missing_indicator, "x": pd.to_numeric(predictor, errors="coerce")}
+    ).dropna()
     if frame["missing"].nunique() < 2:
         return "not_testable", np.nan, np.nan, np.nan, len(frame)
     observed = frame.loc[~frame["missing"], "x"]
@@ -437,9 +436,11 @@ def check_missing_data_assumptions(
     phrased as evidence, not identification of the missing-data mechanism.
     """
     data = ensure_dataframe(data)
-    targets = list(target_columns) if target_columns is not None else [
-        column for column in data.columns if data[column].isna().any()
-    ]
+    targets = (
+        list(target_columns)
+        if target_columns is not None
+        else [column for column in data.columns if data[column].isna().any()]
+    )
     predictors_list = list(predictors) if predictors is not None else list(data.columns)
     missing = [column for column in targets + predictors_list if column not in data]
     if missing:
@@ -468,7 +469,10 @@ def check_missing_data_assumptions(
             if predictor == target:
                 continue
             inferred, _ = infer_series_type(data[predictor], name=predictor)
-            if inferred in {"continuous", "discrete"} and data[predictor].nunique(dropna=True) > max_predictor_categories:
+            if (
+                inferred in {"continuous", "discrete"}
+                and data[predictor].nunique(dropna=True) > max_predictor_categories
+            ):
                 test, statistic, p_value, effect, n_used = _numeric_missingness_association(
                     indicator, data[predictor]
                 )
@@ -527,7 +531,8 @@ def check_missing_data_assumptions(
         "evidence_against_mcar"
         if not summary.empty and summary["conclusion"].eq("evidence_against_mcar").any()
         else "no_detectable_evidence_against_mcar"
-        if not summary.empty and summary["conclusion"].eq("no_detectable_evidence_against_mcar").any()
+        if not summary.empty
+        and summary["conclusion"].eq("no_detectable_evidence_against_mcar").any()
         else "not_assessable"
     )
     overall = pd.DataFrame(

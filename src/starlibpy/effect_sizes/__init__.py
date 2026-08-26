@@ -7,4 +7,7 @@ from .core import (
     effect_size_longitudinal,
     effect_size_rank,
 )
-__all__ = [name for name in globals() if name.startswith("effect_size") or name.startswith("calculate_")]
+
+__all__ = [
+    name for name in globals() if name.startswith("effect_size") or name.startswith("calculate_")
+]

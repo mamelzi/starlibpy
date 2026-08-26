@@ -24,10 +24,9 @@ def _count_changed_cells(before: pd.DataFrame, after: pd.DataFrame) -> int | Non
     # to plain objects before comparison.
     left_object = left.astype(object)
     right_object = right.astype(object)
-    equal = (
-        left_object.eq(right_object)
-        | (left_object.isna() & right_object.isna())
-    ).fillna(False)
+    equal = (left_object.eq(right_object) | (left_object.isna() & right_object.isna())).fillna(
+        False
+    )
     return int((~equal).to_numpy().sum())
 
 
@@ -85,9 +84,7 @@ def audit_transformations(
                     "after_dtype": after_dtype,
                 }
             )
-    dtype_changes = pd.DataFrame(
-        dtype_rows, columns=["column", "before_dtype", "after_dtype"]
-    )
+    dtype_changes = pd.DataFrame(dtype_rows, columns=["column", "before_dtype", "after_dtype"])
 
     missing_rows = []
     all_columns = before.columns.union(after.columns)

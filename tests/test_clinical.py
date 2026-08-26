@@ -28,7 +28,9 @@ def test_adverse_events_preparation_does_not_create_nan_event():
 
 def test_adverse_event_composite_result():
     source = adverse_events_long()
-    population = pd.DataFrame({"patient": ["P1", "P2", "P3", "P4"], "baseline": pd.to_datetime(["2026-01-01"] * 4)})
+    population = pd.DataFrame(
+        {"patient": ["P1", "P2", "P3", "P4"], "baseline": pd.to_datetime(["2026-01-01"] * 4)}
+    )
     result = slp.summarize_adverse_events(
         source,
         patient_id="patient",
@@ -37,7 +39,9 @@ def test_adverse_event_composite_result():
         include_time_to_first=True,
         reference_date="baseline",
     )
-    assert {"incidence", "grades", "outcomes", "imputability", "time_to_first"} <= set(result.available_tables)
+    assert {"incidence", "grades", "outcomes", "imputability", "time_to_first"} <= set(
+        result.available_tables
+    )
     nausea = result.get_table("incidence").set_index("event").loc["Nausea"]
     assert nausea["count"] == 1
     assert nausea["denominator"] == 4
@@ -56,7 +60,9 @@ def recist_long():
 
 
 def test_experimental_recist_target_lesion_rules():
-    prepared = slp.prepare_recist_data(recist_long(), patient_id="patient", new_lesion="new", is_baseline="baseline")
+    prepared = slp.prepare_recist_data(
+        recist_long(), patient_id="patient", new_lesion="new", is_baseline="baseline"
+    )
     result = slp.evaluate_recist11(prepared)
     assessments = result.get_table("assessments")
     p1 = assessments[assessments.patient_id == "P1"].response.tolist()
@@ -68,7 +74,11 @@ def test_experimental_recist_target_lesion_rules():
 
 
 def test_recist_response_rates():
-    result = slp.evaluate_recist11(slp.prepare_recist_data(recist_long(), patient_id="patient", new_lesion="new", is_baseline="baseline"))
+    result = slp.evaluate_recist11(
+        slp.prepare_recist_data(
+            recist_long(), patient_id="patient", new_lesion="new", is_baseline="baseline"
+        )
+    )
     rates = slp.response_rate_analysis(result).get_table().set_index("metric")
     assert rates.loc["ORR", "denominator"] == 2
     assert rates.loc["DCR", "percent"] == 100

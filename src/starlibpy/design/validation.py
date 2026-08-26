@@ -42,9 +42,18 @@ def validate_variable_spec(
     inferred = infer_variable_types(data, columns=[spec.name]).records[spec.name]
     compatibility = {
         "unknown": {
-            "unknown", "identifier", "continuous", "discrete", "binary",
-            "categorical", "ordinal", "count", "datetime", "duration",
-            "time_to_event", "text",
+            "unknown",
+            "identifier",
+            "continuous",
+            "discrete",
+            "binary",
+            "categorical",
+            "ordinal",
+            "count",
+            "datetime",
+            "duration",
+            "time_to_event",
+            "text",
         },
         "identifier": {"identifier", "text", "discrete", "continuous"},
         "continuous": {"continuous", "discrete"},
@@ -70,8 +79,7 @@ def validate_variable_spec(
             observed=inferred.inferred_type,
             expected=spec.statistical_type,
             suggestion=(
-                "Confirm the protocol definition; data-driven type inference is not "
-                "authoritative."
+                "Confirm the protocol definition; data-driven type inference is not authoritative."
             ),
         )
 
@@ -127,14 +135,10 @@ def validate_variable_spec(
             )
         else:
             below = (
-                int((numeric < spec.plausible_min).sum())
-                if spec.plausible_min is not None
-                else 0
+                int((numeric < spec.plausible_min).sum()) if spec.plausible_min is not None else 0
             )
             above = (
-                int((numeric > spec.plausible_max).sum())
-                if spec.plausible_max is not None
-                else 0
+                int((numeric > spec.plausible_max).sum()) if spec.plausible_max is not None else 0
             )
             if below or above:
                 report.add(
@@ -254,10 +258,7 @@ def validate_endpoint_spec(
 
     if variables and spec.variable and spec.variable in variables:
         variable_type = variables[spec.variable].statistical_type
-        if (
-            spec.endpoint_type != "unknown"
-            and variable_type not in {"unknown", spec.endpoint_type}
-        ):
+        if spec.endpoint_type != "unknown" and variable_type not in {"unknown", spec.endpoint_type}:
             report.add(
                 "endpoint.variable_type_conflict",
                 "warning",
@@ -384,9 +385,7 @@ def validate_study_design(
         else:
             pair_sizes = data[pair_id].dropna().value_counts()
             incomplete = int((pair_sizes < 2).sum())
-            oversized = (
-                int((pair_sizes > 2).sum()) if design.pairing.ratio == "1:1" else 0
-            )
+            oversized = int((pair_sizes > 2).sum()) if design.pairing.ratio == "1:1" else 0
             if incomplete and not design.pairing.allow_incomplete:
                 report.add(
                     "study.incomplete_pairs",
@@ -428,9 +427,7 @@ def validate_study_design(
                     field=f"{repeated.subject_id}, {repeated.time_variable}",
                     observed=duplicate_cells,
                 )
-            counts = data.groupby(repeated.subject_id)[repeated.time_variable].nunique(
-                dropna=True
-            )
+            counts = data.groupby(repeated.subject_id)[repeated.time_variable].nunique(dropna=True)
             if not counts.empty and counts.max() <= 1:
                 report.add(
                     "study.no_repeated_measurements",
@@ -547,7 +544,11 @@ def validate_study_design(
         )
 
     for field_name in (
-        "nature", "design_type", "temporality", "allocation", "blinding",
+        "nature",
+        "design_type",
+        "temporality",
+        "allocation",
+        "blinding",
         "sampling",
     ):
         if getattr(design, field_name) == "unknown":
@@ -578,9 +579,7 @@ def validate_analysis_design(
     report = DesignValidationReport(
         metadata={"analysis": analysis.name, "analysis_type": analysis.analysis_type}
     )
-    requirements = check_analysis_requirements(
-        analysis, data=data, study_design=study_design
-    )
+    requirements = check_analysis_requirements(analysis, data=data, study_design=study_design)
     for message in requirements.issues:
         report.add("analysis.requirement", "error", message)
     for message in requirements.recommendations:
@@ -597,10 +596,11 @@ def validate_analysis_design(
                 field=analysis.outcome,
             )
         outcome_type = get_variable_type(analysis.outcome, study_design, data)
-        if (
-            analysis.analysis_type == "diagnostic"
-            and outcome_type not in {"binary", "categorical", "discrete"}
-        ):
+        if analysis.analysis_type == "diagnostic" and outcome_type not in {
+            "binary",
+            "categorical",
+            "discrete",
+        }:
             report.add(
                 "analysis.reference_standard_not_binary",
                 "warning",
@@ -650,9 +650,7 @@ def validate_analysis_design(
 
     if analysis.subject_id and analysis.time_variable:
         duplicates = int(
-            data.duplicated(
-                subset=[analysis.subject_id, analysis.time_variable], keep=False
-            ).sum()
+            data.duplicated(subset=[analysis.subject_id, analysis.time_variable], keep=False).sum()
         )
         if duplicates:
             report.add(
@@ -741,18 +739,14 @@ def compare_design_to_data(
     observed_layout = "unknown"
     if design.subject_id and design.subject_id in data.columns:
         observed_subject_id = design.subject_id
-        observed_layout = (
-            "long" if data[design.subject_id].duplicated().any() else "wide"
-        )
+        observed_layout = "long" if data[design.subject_id].duplicated().any() else "wide"
     rows.append(
         {
             "dimension": "subject_id",
             "declared": design.subject_id,
             "observed": observed_subject_id,
             "status": (
-                "consistent"
-                if design.subject_id == observed_subject_id
-                else "not_assessable"
+                "consistent" if design.subject_id == observed_subject_id else "not_assessable"
             ),
         }
     )

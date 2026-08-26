@@ -48,8 +48,13 @@ def infer_variable_types(
         raise KeyError(f"Columns not found: {missing}")
 
     id_patterns = (
-        "id", "subject_id", "patient_id", "participant_id", "record_id",
-        "subject", "patient",
+        "id",
+        "subject_id",
+        "patient_id",
+        "participant_id",
+        "record_id",
+        "subject",
+        "patient",
     )
     time_patterns = ("time", "visit", "month", "day", "week", "date", "baseline")
     group_patterns = ("group", "arm", "treatment", "exposure", "cohort")
@@ -85,7 +90,10 @@ def infer_variable_types(
                 inferred_type = "binary"
                 confidence = 0.95
                 evidence.append("numeric variable with at most two observed levels")
-            elif unique_ratio >= identifier_unique_ratio and column_name_score(column, id_patterns) >= 0.65:
+            elif (
+                unique_ratio >= identifier_unique_ratio
+                and column_name_score(column, id_patterns) >= 0.65
+            ):
                 inferred_type = "identifier"
                 confidence = 0.90
                 candidate_roles.extend(("identifier", "subject_id"))
@@ -104,7 +112,14 @@ def infer_variable_types(
             strings = non_missing.astype("string").str.strip()
             lowered = set(strings.str.lower().dropna().unique())
             boolean_tokens = {
-                "0", "1", "true", "false", "yes", "no", "oui", "non",
+                "0",
+                "1",
+                "true",
+                "false",
+                "yes",
+                "no",
+                "oui",
+                "non",
             }
             if lowered and lowered <= boolean_tokens:
                 inferred_type = "binary"
@@ -126,7 +141,10 @@ def infer_variable_types(
                     if n_unique <= 2:
                         inferred_type = "binary"
                         confidence = 0.88
-                    elif unique_ratio >= identifier_unique_ratio and column_name_score(column, id_patterns) >= 0.65:
+                    elif (
+                        unique_ratio >= identifier_unique_ratio
+                        and column_name_score(column, id_patterns) >= 0.65
+                    ):
                         inferred_type = "identifier"
                         confidence = 0.86
                         candidate_roles.extend(("identifier", "subject_id"))
@@ -224,7 +242,11 @@ def infer_study_design(
     if detected_subject is None:
         candidates: list[tuple[float, str]] = []
         patterns = (
-            "subject_id", "patient_id", "participant_id", "id", "subject",
+            "subject_id",
+            "patient_id",
+            "participant_id",
+            "id",
+            "subject",
             "patient",
         )
         for column, record in type_report.records.items():
@@ -243,9 +265,7 @@ def infer_study_design(
     if detected_time is None:
         candidates = []
         for column, record in type_report.records.items():
-            score = column_name_score(
-                column, ("visit", "time", "month", "week", "day", "date")
-            )
+            score = column_name_score(column, ("visit", "time", "month", "week", "day", "date"))
             score += 0.20 if record.inferred_type in {"datetime", "discrete", "continuous"} else 0.0
             if score:
                 candidates.append((min(1.0, score), column))
@@ -261,9 +281,7 @@ def infer_study_design(
         for column, record in type_report.records.items():
             if not 2 <= record.n_unique <= 20:
                 continue
-            score = column_name_score(
-                column, ("group", "arm", "treatment", "exposure", "cohort")
-            )
+            score = column_name_score(column, ("group", "arm", "treatment", "exposure", "cohort"))
             score += 0.20 if record.inferred_type in {"binary", "categorical", "discrete"} else 0.0
             if score:
                 candidates.append((min(1.0, score), column))
@@ -374,8 +392,7 @@ def infer_study_design(
         if value in {None, "unknown"}
     )
     confidence_values = [
-        value for value in (subject_confidence, group_confidence, time_confidence)
-        if value > 0
+        value for value in (subject_confidence, group_confidence, time_confidence) if value > 0
     ]
     overall_confidence = float(np.mean(confidence_values)) if confidence_values else 0.25
     evidence.update(

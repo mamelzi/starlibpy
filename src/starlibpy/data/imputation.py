@@ -114,12 +114,13 @@ def _simple_impute_once(
         elif strategy in {"ffill", "bfill"}:
             method = "ffill" if strategy == "ffill" else "bfill"
             if group_by:
-                output[column] = (
-                    output.groupby(list(group_by), dropna=False, sort=False)[column]
-                    .transform(lambda s: s.ffill() if method == "ffill" else s.bfill())
-                )
+                output[column] = output.groupby(list(group_by), dropna=False, sort=False)[
+                    column
+                ].transform(lambda s: s.ffill() if method == "ffill" else s.bfill())
             else:
-                output[column] = output[column].ffill() if method == "ffill" else output[column].bfill()
+                output[column] = (
+                    output[column].ffill() if method == "ffill" else output[column].bfill()
+                )
             fill_description = method
         elif strategy in VALID_SIMPLE_IMPUTATION_STRATEGIES:
             if group_by:
@@ -151,7 +152,9 @@ def _simple_impute_once(
                         draws = rng.choice(valid.to_numpy(), size=len(missing_index), replace=True)
                         output.loc[missing_index, column] = draws
                     elif len(missing_index):
-                        warnings.append(f"{column}: no observed values available for random sampling.")
+                        warnings.append(
+                            f"{column}: no observed values available for random sampling."
+                        )
                     fill_value = "sampled values"
                 else:
                     fill_value = _statistic_fill_value(output[column], strategy, constant, rng)
@@ -204,9 +207,7 @@ def _iterative_impute(
     non_numeric = [column for column in columns if column not in numeric_columns]
     warnings: list[str] = []
     if non_numeric:
-        warnings.append(
-            f"Iterative imputation skipped non-numeric columns: {tuple(non_numeric)}."
-        )
+        warnings.append(f"Iterative imputation skipped non-numeric columns: {tuple(non_numeric)}.")
     all_missing = [column for column in numeric_columns if data[column].notna().sum() == 0]
     usable = [column for column in numeric_columns if column not in all_missing]
     if all_missing:
@@ -321,9 +322,11 @@ def impute_missing_data(
     before = ensure_dataframe(data)
     if method not in VALID_IMPUTATION_METHODS:
         raise ValueError(f"method must be one of {sorted(VALID_IMPUTATION_METHODS)}.")
-    selected = list(columns) if columns is not None else [
-        column for column in before.columns if before[column].isna().any()
-    ]
+    selected = (
+        list(columns)
+        if columns is not None
+        else [column for column in before.columns if before[column].isna().any()]
+    )
     missing = [column for column in selected if column not in before]
     if missing:
         raise KeyError(f"Columns not found: {missing}")
@@ -405,7 +408,9 @@ def impute_missing_data(
                 "n_datasets": len(dataset_tuple),
                 "n_columns_requested": len(selected),
                 "n_missing_before": int(before[selected].isna().sum().sum()) if selected else 0,
-                "n_missing_after_primary": int(primary[selected].isna().sum().sum()) if selected else 0,
+                "n_missing_after_primary": int(primary[selected].isna().sum().sum())
+                if selected
+                else 0,
                 "random_state": random_state,
             }
         ]
@@ -480,7 +485,11 @@ def pool_imputed_results(
         std_error = math.sqrt(max(total_variance, 0.0))
         if b > 0 and m > 1:
             relative_increase = ((1 + 1 / m) * b) / u_bar if u_bar > 0 else np.inf
-            degrees_freedom = (m - 1) * (1 + 1 / relative_increase) ** 2 if np.isfinite(relative_increase) else m - 1
+            degrees_freedom = (
+                (m - 1) * (1 + 1 / relative_increase) ** 2
+                if np.isfinite(relative_increase)
+                else m - 1
+            )
             critical = float(stats.t.ppf(1 - alpha / 2, df=degrees_freedom))
         else:
             relative_increase = 0.0
@@ -493,7 +502,11 @@ def pool_imputed_results(
         )
         statistic = q_bar / std_error if std_error > 0 else np.nan
         if np.isfinite(degrees_freedom):
-            p_value = 2 * stats.t.sf(abs(statistic), df=degrees_freedom) if np.isfinite(statistic) else np.nan
+            p_value = (
+                2 * stats.t.sf(abs(statistic), df=degrees_freedom)
+                if np.isfinite(statistic)
+                else np.nan
+            )
         else:
             p_value = 2 * stats.norm.sf(abs(statistic)) if np.isfinite(statistic) else np.nan
         pooled_rows.append(

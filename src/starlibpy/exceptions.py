@@ -1,5 +1,6 @@
 """Starlibpy exception hierarchy."""
 
+
 class StarlibpyError(Exception):
     """Base exception for Starlibpy."""
 

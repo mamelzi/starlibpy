@@ -15,7 +15,11 @@ def test_assumption_checks_and_method_recommendation():
     assert {"normality", "homogeneity_of_variance"} <= set(report.get_table().assumption)
     recommendation = slp.recommend_test(data=data, outcome="outcome", group="group")
     assert recommendation.recommended_method in {
-        "welch", "student", "mann_whitney", "brunner_munzel", "permutation"
+        "welch",
+        "student",
+        "mann_whitney",
+        "brunner_munzel",
+        "permutation",
     }
 
 
@@ -60,8 +64,11 @@ def test_bootstrap_permutation_exact_and_design_aware_resampling():
     boot = slp.bootstrap_ci(x, np.mean, n_resamples=200, random_state=3)
     assert boot.get_table().iloc[0].ci_lower < boot.get_table().iloc[0].ci_upper
     perm = slp.permutation_test(
-        x, y, statistic=lambda a, b: np.mean(a) - np.mean(b),
-        n_resamples=200, random_state=3,
+        x,
+        y,
+        statistic=lambda a, b: np.mean(a) - np.mean(b),
+        n_resamples=200,
+        random_state=3,
     )
     assert 0 <= perm.get_table().iloc[0].p_value <= 1
     exact = slp.exact_test([[5, 1], [2, 6]])
@@ -79,9 +86,7 @@ def test_cluster_and_stratified_bootstrap():
         }
     )
     statistic = lambda frame: float(frame["value"].mean())
-    clustered = slp.cluster_bootstrap(
-        data, "cluster", statistic, n_resamples=100, random_state=2
-    )
+    clustered = slp.cluster_bootstrap(data, "cluster", statistic, n_resamples=100, random_state=2)
     stratified = slp.stratified_bootstrap(
         data, "stratum", statistic, n_resamples=100, random_state=2
     )

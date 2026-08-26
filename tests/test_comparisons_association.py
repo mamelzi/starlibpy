@@ -36,7 +36,9 @@ def test_paired_proportions_and_ordered_trend():
 
 
 def test_correlation_and_matrix():
-    result = slp.correlation_analysis([1, 2, 3, 4, 5], [1, 2, 2, 4, 5], method="spearman", n_resamples=200, random_state=2)
+    result = slp.correlation_analysis(
+        [1, 2, 3, 4, 5], [1, 2, 2, 4, 5], method="spearman", n_resamples=200, random_state=2
+    )
     row = result.get_table().iloc[0]
     assert -1 <= row.coefficient <= 1
     df = pd.DataFrame({"a": [1, 2, 3, 4], "b": [4, 3, 2, 1], "c": [1, 1, 2, 2]})

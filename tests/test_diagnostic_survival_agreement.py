@@ -49,8 +49,7 @@ def test_time_to_event_km_logrank_and_rmst():
         }
     )
     tte = slp.create_time_to_event(
-        dates, origin="start", event_indicator="event",
-        event_date="event_date", censor_date="last"
+        dates, origin="start", event_indicator="event", event_date="event_date", censor_date="last"
     )
     assert tte.get_table().time.tolist() == [10.0, 20.0]
 
@@ -61,21 +60,29 @@ def test_time_to_event_km_logrank_and_rmst():
     assert len(at.get_table()) == 4
     logrank = slp.logrank_test(df, time="time", event="event", group="group")
     assert 0 <= logrank.get_table().iloc[0].p_value <= 1
-    rmst = slp.rmst_analysis(df, time="time", event="event", group="group", tau=6, n_resamples=100, random_state=2)
+    rmst = slp.rmst_analysis(
+        df, time="time", event="event", group="group", tau=6, n_resamples=100, random_state=2
+    )
     assert not rmst.get_table().empty
 
 
 def test_cox_and_composite_survival_analysis():
     df = survival_data()
-    cox = slp.cox_regression(df, time="time", event="event", predictors=["age", "group"], reference_levels={"group": "A"})
+    cox = slp.cox_regression(
+        df, time="time", event="event", predictors=["age", "group"], reference_levels={"group": "A"}
+    )
     assert "hazard_ratio" in cox.get_table()
     assert not cox.get_table("ph_assumption").empty
-    composite = slp.survival_analysis(df, time="time", event="event", group="group", predictors=["age"], tau=6)
+    composite = slp.survival_analysis(
+        df, time="time", event="event", group="group", predictors=["age"], tau=6
+    )
     assert {"km_summary", "logrank", "cox", "rmst"} <= set(composite.available_tables)
 
 
 def test_agreement_icc_and_bland_altman():
-    categorical = slp.categorical_agreement([1, 1, 2, 2, 1, 2], [1, 2, 2, 2, 1, 1], n_resamples=100, random_state=2)
+    categorical = slp.categorical_agreement(
+        [1, 1, 2, 2, 1, 2], [1, 2, 2, 2, 1, 1], n_resamples=100, random_state=2
+    )
     assert -1 <= categorical.get_table().iloc[0].kappa <= 1
 
     long = pd.DataFrame(
@@ -85,7 +92,9 @@ def test_agreement_icc_and_bland_altman():
             "rating": np.repeat(np.linspace(10, 20, 10), 3) + np.tile([0, 0.2, -0.1], 10),
         }
     )
-    icc = slp.intraclass_correlation(long, subject="subject", rater="rater", rating="rating", n_resamples=50, random_state=1)
+    icc = slp.intraclass_correlation(
+        long, subject="subject", rater="rater", rating="rating", n_resamples=50, random_state=1
+    )
     assert np.isfinite(icc.get_table().iloc[0].icc)
 
     ba = slp.bland_altman([1, 2, 3, 4, 5], [1.1, 1.9, 3.2, 3.8, 5.1])

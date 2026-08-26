@@ -39,7 +39,11 @@ class VariableSpec:
         self.missing_values = as_tuple(self.missing_values)
         if self.reference is not None and self.categories and self.reference not in self.categories:
             raise ValueError("reference must be present in categories.")
-        if self.positive_class is not None and self.categories and self.positive_class not in self.categories:
+        if (
+            self.positive_class is not None
+            and self.categories
+            and self.positive_class not in self.categories
+        ):
             raise ValueError("positive_class must be present in categories.")
         if self.plausible_min is not None and self.plausible_max is not None:
             if self.plausible_min > self.plausible_max:
@@ -95,7 +99,10 @@ class EndpointSpec:
         self.name = self.name.strip()
         validate_choice("endpoint_type", self.endpoint_type, VALID_STATISTICAL_TYPES)
         if self.direction not in {
-            None, "higher_better", "lower_better", "event_favorable",
+            None,
+            "higher_better",
+            "lower_better",
+            "event_favorable",
             "event_unfavorable",
         }:
             raise ValueError("Invalid endpoint direction.")
@@ -107,8 +114,11 @@ class EndpointSpec:
 
     def required_columns(self) -> tuple[str, ...]:
         values = (
-            self.variable, self.time_variable, self.origin_variable,
-            self.event_date_variable, self.censor_date_variable,
+            self.variable,
+            self.time_variable,
+            self.origin_variable,
+            self.event_date_variable,
+            self.censor_date_variable,
         )
         return tuple(dict.fromkeys(value for value in values if value))
 
@@ -121,9 +131,7 @@ class EndpointSpec:
     def from_dict(cls, data: Mapping[str, Any]) -> "EndpointSpec":
         payload = dict(data)
         payload.pop("object_type", None)
-        payload["competing_event_values"] = as_tuple(
-            payload.get("competing_event_values")
-        )
+        payload["competing_event_values"] = as_tuple(payload.get("competing_event_values"))
         return cls(**payload)
 
     def copy_with(self, **changes: Any) -> "EndpointSpec":
@@ -156,9 +164,7 @@ class PairingSpec:
     def from_dict(cls, data: Mapping[str, Any]) -> "PairingSpec":
         payload = dict(data)
         payload.pop("object_type", None)
-        payload["matching_variables"] = as_string_tuple(
-            payload.get("matching_variables")
-        )
+        payload["matching_variables"] = as_string_tuple(payload.get("matching_variables"))
         return cls(**payload)
 
 
@@ -244,13 +250,23 @@ def define_variable(
 ) -> VariableSpec:
     """Create a validated variable specification."""
     return VariableSpec(
-        name=name, label=label, statistical_type=statistical_type, role=role,
-        unit=unit, categories=as_tuple(categories), ordered=ordered,
-        reference=reference, positive_class=positive_class,
-        plausible_min=plausible_min, plausible_max=plausible_max,
-        missing_values=as_tuple(missing_values), transformation=transformation,
-        time_dependent=time_dependent, primary=primary,
-        description=description, metadata=dict(metadata or {}),
+        name=name,
+        label=label,
+        statistical_type=statistical_type,
+        role=role,
+        unit=unit,
+        categories=as_tuple(categories),
+        ordered=ordered,
+        reference=reference,
+        positive_class=positive_class,
+        plausible_min=plausible_min,
+        plausible_max=plausible_max,
+        missing_values=as_tuple(missing_values),
+        transformation=transformation,
+        time_dependent=time_dependent,
+        primary=primary,
+        description=description,
+        metadata=dict(metadata or {}),
     )
 
 
@@ -279,14 +295,24 @@ def define_endpoint(
 ) -> EndpointSpec:
     """Create a validated endpoint specification."""
     return EndpointSpec(
-        name=name, variable=variable, endpoint_type=endpoint_type,
-        label=label, primary=primary, direction=direction,
-        event_value=event_value, censor_value=censor_value,
-        time_variable=time_variable, origin_variable=origin_variable,
+        name=name,
+        variable=variable,
+        endpoint_type=endpoint_type,
+        label=label,
+        primary=primary,
+        direction=direction,
+        event_value=event_value,
+        censor_value=censor_value,
+        time_variable=time_variable,
+        origin_variable=origin_variable,
         event_date_variable=event_date_variable,
-        censor_date_variable=censor_date_variable, horizon=horizon,
-        horizon_unit=horizon_unit, threshold=threshold, margin=margin,
+        censor_date_variable=censor_date_variable,
+        horizon=horizon,
+        horizon_unit=horizon_unit,
+        threshold=threshold,
+        margin=margin,
         competing_event_values=as_tuple(competing_event_values),
-        recurrent=recurrent, definition=definition,
+        recurrent=recurrent,
+        definition=definition,
         metadata=dict(metadata or {}),
     )

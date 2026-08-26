@@ -72,18 +72,23 @@ def test_weighted_logrank_competing_risk_summary_and_landmark():
         data, time="time", event="event", group="group", weight="breslow"
     )
     assert 0 <= weighted.get_table().iloc[0].p_value <= 1
-    cumulative = slp.cumulative_incidence(
-        data, time="time", event_type="cause", group="group"
-    )
+    cumulative = slp.cumulative_incidence(data, time="time", event_type="cause", group="group")
     assert not cumulative.get_table().empty
     cause_specific = slp.cause_specific_cox(
-        data, time="time", event_type="cause", cause=1,
+        data,
+        time="time",
+        event_type="cause",
+        cause=1,
         predictors=["age", "group"],
     )
     assert "hazard_ratio" in cause_specific.get_table()
     landmark = slp.landmark_analysis(
-        data, time="time", event="event", landmark=2,
-        group="group", predictors=["age"],
+        data,
+        time="time",
+        event="event",
+        landmark=2,
+        group="group",
+        predictors=["age"],
     )
     assert "km_summary" in landmark.available_tables
 
@@ -99,9 +104,7 @@ def test_advanced_diagnostic_and_agreement_outputs():
     decision = slp.decision_curve_analysis(
         truth, {"model_1": score1, "model_2": score2}, thresholds=[0.1, 0.2, 0.3, 0.4]
     )
-    assert {"model_1", "model_2", "treat_all", "treat_none"} <= set(
-        decision.get_table().model
-    )
+    assert {"model_1", "model_2", "treat_all", "treat_none"} <= set(decision.get_table().model)
     x = rng.normal(10, 2, 50)
     y = x + rng.normal(0.1, 0.5, 50)
     concordance = slp.concordance_correlation(x, y, n_resamples=100, random_state=1)

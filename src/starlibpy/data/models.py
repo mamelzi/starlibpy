@@ -26,9 +26,7 @@ class DataQualityIssue:
 
     def __post_init__(self) -> None:
         if self.severity not in VALID_ISSUE_SEVERITIES:
-            raise ValueError(
-                f"severity must be one of {sorted(VALID_ISSUE_SEVERITIES)}."
-            )
+            raise ValueError(f"severity must be one of {sorted(VALID_ISSUE_SEVERITIES)}.")
         self.row_examples = tuple(self.row_examples)
 
     def to_dict(self) -> dict[str, Any]:
@@ -90,9 +88,7 @@ class DataResult:
                     "A table name is required because this result has multiple tables."
                 )
         if selected not in self.tables:
-            raise KeyError(
-                f"Unknown table {selected!r}. Available: {list(self.tables)}"
-            )
+            raise KeyError(f"Unknown table {selected!r}. Available: {list(self.tables)}")
         table = self.tables[selected]
         return table.copy(deep=True) if copy else table
 
@@ -109,14 +105,19 @@ class DataResult:
         if raw and template is None and theme is None and not kwargs:
             return self.get_table(name=name, copy=copy)
         from starlibpy.reporting import render_table
-        return render_table(self, name=name, template=template or "journal", theme=theme or "default", **kwargs)
+
+        return render_table(
+            self, name=name, template=template or "journal", theme=theme or "default", **kwargs
+        )
 
     def plot(self, kind: str | None = None, **kwargs: Any) -> Any:
         from starlibpy.reporting import plot_result
+
         return plot_result(self, kind=kind, **kwargs)
 
     def export(self, path: str, **kwargs: Any) -> Any:
         from starlibpy.reporting import export_result
+
         return export_result(self, path, **kwargs)
 
     def list_outputs(self) -> dict[str, tuple[str, ...]]:
@@ -307,9 +308,7 @@ class AnalysisDatasetResult(TransformationResult):
             {
                 "inclusion_mask": json_safe(self.inclusion_mask),
                 "exclusions": json_safe(self.exclusions),
-                "validation": self.validation.to_dict()
-                if self.validation is not None
-                else None,
+                "validation": self.validation.to_dict() if self.validation is not None else None,
                 "required_columns": list(self.required_columns),
             }
         )

@@ -150,14 +150,10 @@ class StudyDesign:
         validate_choice("sampling", self.sampling, VALID_SAMPLING_TYPES)
         validate_choice("center_design", self.center_design, VALID_CENTER_DESIGNS)
         validate_choice("data_layout", self.data_layout, VALID_DATA_LAYOUTS)
-        validate_choice(
-            "missing_data_policy", self.missing_data_policy, VALID_MISSING_POLICIES
-        )
+        validate_choice("missing_data_policy", self.missing_data_policy, VALID_MISSING_POLICIES)
         validate_probability("confidence_level", float(self.confidence_level))
         validate_probability("alpha", float(self.alpha))
-        if not math.isclose(
-            self.confidence_level, 1.0 - self.alpha, rel_tol=0, abs_tol=1e-12
-        ):
+        if not math.isclose(self.confidence_level, 1.0 - self.alpha, rel_tol=0, abs_tol=1e-12):
             raise ValueError("confidence_level must equal 1 - alpha.")
 
         self.variables = normalize_variables(self.variables)
@@ -173,9 +169,7 @@ class StudyDesign:
         if self.repeated_measures is not None and not isinstance(
             self.repeated_measures, RepeatedMeasuresSpec
         ):
-            self.repeated_measures = RepeatedMeasuresSpec.from_dict(
-                self.repeated_measures
-            )
+            self.repeated_measures = RepeatedMeasuresSpec.from_dict(self.repeated_measures)
         self.provenance = {
             str(key): value
             if isinstance(value, ProvenanceRecord)
@@ -194,12 +188,8 @@ class StudyDesign:
                 "temporality": self.temporality,
                 "unit_of_observation": self.unit_of_observation,
                 "subject_id": self.subject_id,
-                "variables": {
-                    name: spec.to_dict() for name, spec in self.variables.items()
-                },
-                "endpoints": {
-                    name: spec.to_dict() for name, spec in self.endpoints.items()
-                },
+                "variables": {name: spec.to_dict() for name, spec in self.variables.items()},
+                "endpoints": {name: spec.to_dict() for name, spec in self.endpoints.items()},
                 "group_variable": self.group_variable,
                 "groups": self.groups,
                 "allocation": self.allocation,
@@ -222,9 +212,7 @@ class StudyDesign:
                 "missing_data_policy": self.missing_data_policy,
                 "language": self.language,
                 "metadata": self.metadata,
-                "provenance": {
-                    key: value.to_dict() for key, value in self.provenance.items()
-                },
+                "provenance": {key: value.to_dict() for key, value in self.provenance.items()},
             }
         )
 
@@ -338,19 +326,13 @@ class AnalysisDesign:
             self.independence_structure,
             VALID_INDEPENDENCE_STRUCTURES,
         )
-        validate_choice(
-            "missing_data_policy", self.missing_data_policy, VALID_MISSING_POLICIES
-        )
+        validate_choice("missing_data_policy", self.missing_data_policy, VALID_MISSING_POLICIES)
         validate_choice("method_mode", self.method_mode, VALID_METHOD_MODES)
-        validate_choice(
-            "assumption_policy", self.assumption_policy, VALID_ASSUMPTION_POLICIES
-        )
+        validate_choice("assumption_policy", self.assumption_policy, VALID_ASSUMPTION_POLICIES)
         validate_choice("data_layout", self.data_layout, VALID_DATA_LAYOUTS)
         validate_probability("confidence_level", float(self.confidence_level))
         validate_probability("alpha", float(self.alpha))
-        if not math.isclose(
-            self.confidence_level, 1.0 - self.alpha, rel_tol=0, abs_tol=1e-12
-        ):
+        if not math.isclose(self.confidence_level, 1.0 - self.alpha, rel_tol=0, abs_tol=1e-12):
             raise ValueError("confidence_level must equal 1 - alpha.")
         self.predictors = as_string_tuple(self.predictors)
         self.covariates = as_string_tuple(self.covariates)
@@ -374,9 +356,7 @@ class AnalysisDesign:
         payload = asdict(self)
         payload["object_type"] = "AnalysisDesign"
         payload["schema_version"] = "1.0"
-        payload["provenance"] = {
-            key: value.to_dict() for key, value in self.provenance.items()
-        }
+        payload["provenance"] = {key: value.to_dict() for key, value in self.provenance.items()}
         return json_safe(payload)
 
     @classmethod
@@ -385,8 +365,12 @@ class AnalysisDesign:
         payload.pop("object_type", None)
         payload.pop("schema_version", None)
         for field_name in (
-            "predictors", "covariates", "between_factors", "within_factors",
-            "cluster_ids", "strata",
+            "predictors",
+            "covariates",
+            "between_factors",
+            "within_factors",
+            "cluster_ids",
+            "strata",
         ):
             payload[field_name] = as_string_tuple(payload.get(field_name))
         payload["provenance"] = {

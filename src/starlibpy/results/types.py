@@ -5,7 +5,13 @@ from .base import StarResult
 
 
 def _make(name: str, result_type: str):
-    return dataclass(type(name, (StarResult,), {"__annotations__": {"result_type": str}, "result_type": result_type}))
+    return dataclass(
+        type(
+            name,
+            (StarResult,),
+            {"__annotations__": {"result_type": str}, "result_type": result_type},
+        )
+    )
 
 
 ContinuousSummaryResult = _make("ContinuousSummaryResult", "continuous_summary")
@@ -113,7 +119,9 @@ AdverseEventGradeResult = _make("AdverseEventGradeResult", "adverse_event_grade"
 AdverseEventTimeResult = _make("AdverseEventTimeResult", "adverse_event_time")
 AdverseEventRecurrentResult = _make("AdverseEventRecurrentResult", "adverse_event_recurrent")
 AdverseEventOutcomeResult = _make("AdverseEventOutcomeResult", "adverse_event_outcome")
-AdverseEventImputabilityResult = _make("AdverseEventImputabilityResult", "adverse_event_imputability")
+AdverseEventImputabilityResult = _make(
+    "AdverseEventImputabilityResult", "adverse_event_imputability"
+)
 RecistDataResult = _make("RecistDataResult", "recist_data")
 RecistResult = _make("RecistResult", "recist")
 RecistSummaryResult = _make("RecistSummaryResult", "recist_summary")

@@ -72,9 +72,7 @@ def normalize_datasets(
                 raise ImportError(
                     "Reading Parquet requires an optional engine such as pyarrow."
                 ) from exc
-        raise ValueError(
-            "Unsupported file type. Supported: CSV, Excel, Pickle, and Parquet."
-        )
+        raise ValueError("Unsupported file type. Supported: CSV, Excel, Pickle, and Parquet.")
     raise TypeError("source must be a DataFrame, mapping of DataFrames, or file path.")
 
 
@@ -171,11 +169,7 @@ def infer_series_type(
             or np.allclose(numeric_valid.to_numpy(), np.round(numeric_valid.to_numpy()))
         )
         evidence["integer_like"] = integer_like
-        if (
-            name
-            and looks_like_identifier_name(name)
-            and unique_ratio >= identifier_unique_ratio
-        ):
+        if name and looks_like_identifier_name(name) and unique_ratio >= identifier_unique_ratio:
             return "identifier", evidence
         if n_unique == 2:
             return "binary", evidence
@@ -187,8 +181,7 @@ def infer_series_type(
         return "continuous", evidence
 
     date_candidate = (
-        pd.api.types.is_object_dtype(series.dtype)
-        or pd.api.types.is_string_dtype(series.dtype)
+        pd.api.types.is_object_dtype(series.dtype) or pd.api.types.is_string_dtype(series.dtype)
     ) and ((name and looks_like_date_name(name)) or _date_text_has_separators(non_missing))
     if date_candidate:
         parsed = pd.to_datetime(non_missing, errors="coerce", utc=False)
@@ -209,7 +202,9 @@ def infer_series_type(
 def coerce_to_declared_type(series: pd.Series, declared_type: str) -> tuple[pd.Series, int]:
     declared_type = str(declared_type).lower()
     if declared_type not in VALID_INFERRED_TYPES and declared_type not in {
-        "ordinal", "count", "time_to_event"
+        "ordinal",
+        "count",
+        "time_to_event",
     }:
         return series.copy(), 0
     original_non_missing = series.notna()

@@ -9,10 +9,17 @@ from statsmodels.stats.multitest import multipletests
 from starlibpy.results import MultiplicityResult
 
 _METHOD_ALIASES = {
-    "bonferroni": "bonferroni", "holm": "holm", "hochberg": "simes-hochberg",
-    "hommel": "hommel", "sidak": "sidak", "bh": "fdr_bh",
-    "benjamini_hochberg": "fdr_bh", "by": "fdr_by", "benjamini_yekutieli": "fdr_by",
+    "bonferroni": "bonferroni",
+    "holm": "holm",
+    "hochberg": "simes-hochberg",
+    "hommel": "hommel",
+    "sidak": "sidak",
+    "bh": "fdr_bh",
+    "benjamini_hochberg": "fdr_bh",
+    "by": "fdr_by",
+    "benjamini_yekutieli": "fdr_by",
 }
+
 
 @dataclass(frozen=True)
 class MultiplicityFamily:
@@ -37,7 +44,10 @@ def define_multiplicity_family(
 
 
 def adjust_pvalues(
-    pvalues: Iterable[float], *, method: str = "holm", alpha: float = 0.05,
+    pvalues: Iterable[float],
+    *,
+    method: str = "holm",
+    alpha: float = 0.05,
     labels: Iterable[str] | None = None,
 ) -> MultiplicityResult:
     """Adjust p-values while retaining raw and adjusted decisions."""
@@ -47,14 +57,25 @@ def adjust_pvalues(
     if method not in _METHOD_ALIASES:
         raise ValueError(f"Unknown method. Available: {sorted(_METHOD_ALIASES)}")
     reject, p_adj, _, _ = multipletests(p, alpha=alpha, method=_METHOD_ALIASES[method])
-    labels = list(labels) if labels is not None else [f"H{i+1}" for i in range(len(p))]
+    labels = list(labels) if labels is not None else [f"H{i + 1}" for i in range(len(p))]
     if len(labels) != len(p):
         raise ValueError("labels must have the same length as pvalues.")
-    table = pd.DataFrame({"hypothesis": labels, "p_value": p, "p_adjusted": p_adj,
-                          "reject_raw": p < alpha, "reject_adjusted": reject,
-                          "method": method, "alpha": alpha})
-    return MultiplicityResult(tables={"multiplicity": table}, default_table="multiplicity",
-                              metadata={"available_plots": ("pvalues",)})
+    table = pd.DataFrame(
+        {
+            "hypothesis": labels,
+            "p_value": p,
+            "p_adjusted": p_adj,
+            "reject_raw": p < alpha,
+            "reject_adjusted": reject,
+            "method": method,
+            "alpha": alpha,
+        }
+    )
+    return MultiplicityResult(
+        tables={"multiplicity": table},
+        default_table="multiplicity",
+        metadata={"available_plots": ("pvalues",)},
+    )
 
 
 def summarize_multiplicity(
@@ -66,27 +87,48 @@ def summarize_multiplicity(
     summary so that publication rendering does not discard raw p-values or
     decisions.
     """
-    table=result.get_table("multiplicity")
-    method=(family.method if family is not None else
-            str(table["method"].iloc[0]) if "method" in table and len(table) else
-            str(result.metadata.get("method", "unknown")))
-    alpha=(family.alpha if family is not None else
-           float(table["alpha"].iloc[0]) if "alpha" in table and len(table) else
-           float(result.metadata.get("alpha", .05)))
-    adjusted_col="reject_adjusted" if "reject_adjusted" in table else "reject"
-    summary=pd.DataFrame([{
-        "family":family.name if family is not None else result.metadata.get("family", "unspecified"),
-        "n_hypotheses":len(table),
-        "method":method,
-        "alpha":alpha,
-        "n_rejected":int(table[adjusted_col].sum()) if adjusted_col in table else np.nan,
-        "hypotheses":list(family.hypotheses) if family is not None else table.get("hypothesis", pd.Series(dtype=str)).tolist(),
-    }])
+    table = result.get_table("multiplicity")
+    method = (
+        family.method
+        if family is not None
+        else str(table["method"].iloc[0])
+        if "method" in table and len(table)
+        else str(result.metadata.get("method", "unknown"))
+    )
+    alpha = (
+        family.alpha
+        if family is not None
+        else float(table["alpha"].iloc[0])
+        if "alpha" in table and len(table)
+        else float(result.metadata.get("alpha", 0.05))
+    )
+    adjusted_col = "reject_adjusted" if "reject_adjusted" in table else "reject"
+    summary = pd.DataFrame(
+        [
+            {
+                "family": family.name
+                if family is not None
+                else result.metadata.get("family", "unspecified"),
+                "n_hypotheses": len(table),
+                "method": method,
+                "alpha": alpha,
+                "n_rejected": int(table[adjusted_col].sum()) if adjusted_col in table else np.nan,
+                "hypotheses": list(family.hypotheses)
+                if family is not None
+                else table.get("hypothesis", pd.Series(dtype=str)).tolist(),
+            }
+        ]
+    )
     return MultiplicityResult(
-        tables={"summary":summary,"multiplicity":table},
+        tables={"summary": summary, "multiplicity": table},
         default_table="summary",
         default_plot=result.default_plot,
-        metadata={**result.metadata,"family":summary.iloc[0]["family"],"method":method,"alpha":alpha},
+        metadata={
+            **result.metadata,
+            "family": summary.iloc[0]["family"],
+            "method": method,
+            "alpha": alpha,
+        },
     )
 
 
@@ -95,14 +137,22 @@ def apply_hierarchical_testing(
 ) -> MultiplicityResult:
     """Apply fixed-sequence hierarchical testing in the supplied order."""
     p = np.asarray(list(pvalues), dtype=float)
-    labels = list(labels) if labels is not None else [f"H{i+1}" for i in range(len(p))]
-    active = True; reject = []
+    labels = list(labels) if labels is not None else [f"H{i + 1}" for i in range(len(p))]
+    active = True
+    reject = []
     for value in p:
         decision = bool(active and value < alpha)
         reject.append(decision)
         if not decision:
             active = False
-    table = pd.DataFrame({"hypothesis": labels, "p_value": p,
-                          "reject": reject, "order": np.arange(1, len(p)+1),
-                          "method": "fixed_sequence", "alpha": alpha})
+    table = pd.DataFrame(
+        {
+            "hypothesis": labels,
+            "p_value": p,
+            "reject": reject,
+            "order": np.arange(1, len(p) + 1),
+            "method": "fixed_sequence",
+            "alpha": alpha,
+        }
+    )
     return MultiplicityResult(tables={"multiplicity": table}, default_table="multiplicity")

@@ -76,8 +76,7 @@ def define_study_design(
     )
     repeated_obj = (
         repeated_measures
-        if isinstance(repeated_measures, RepeatedMeasuresSpec)
-        or repeated_measures is None
+        if isinstance(repeated_measures, RepeatedMeasuresSpec) or repeated_measures is None
         else RepeatedMeasuresSpec.from_dict(repeated_measures)
     )
     cluster_objects = tuple(
@@ -169,9 +168,7 @@ def enrich_study_design(
         subject_id=design.subject_id,
         group_variable=design.group_variable,
         time_variable=(
-            design.repeated_measures.time_variable
-            if design.repeated_measures
-            else None
+            design.repeated_measures.time_variable if design.repeated_measures else None
         ),
         pair_id=design.pairing.pair_id if design.pairing else None,
         cluster_ids=[cluster.cluster_id for cluster in design.clusters],
@@ -207,9 +204,7 @@ def enrich_study_design(
                 source="inferred",
                 status="inferred",
                 confidence=(
-                    inferred_provenance.confidence
-                    if inferred_provenance
-                    else draft.confidence
+                    inferred_provenance.confidence if inferred_provenance else draft.confidence
                 ),
                 note="Added by enrich_study_design().",
             )
@@ -303,18 +298,12 @@ def summarize_study_design(
             "data_layout": design.data_layout,
             "pairing": design.pairing.to_dict() if design.pairing else None,
             "repeated_measures": (
-                design.repeated_measures.to_dict()
-                if design.repeated_measures
-                else None
+                design.repeated_measures.to_dict() if design.repeated_measures else None
             ),
             "clusters": [cluster.to_dict() for cluster in design.clusters],
         },
-        "variables": {
-            name: spec.to_dict() for name, spec in design.variables.items()
-        },
-        "endpoints": {
-            name: spec.to_dict() for name, spec in design.endpoints.items()
-        },
+        "variables": {name: spec.to_dict() for name, spec in design.variables.items()},
+        "endpoints": {name: spec.to_dict() for name, spec in design.endpoints.items()},
         "statistical_defaults": {
             "confidence_level": design.confidence_level,
             "alpha": design.alpha,

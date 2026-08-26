@@ -132,7 +132,9 @@ def create_analysis_dataset(
     transformation_tables: dict[str, pd.DataFrame] = {}
 
     if normalize_missing_codes:
-        payload_columns = [column for column in working.columns if column != "__starlib_source_row__"]
+        payload_columns = [
+            column for column in working.columns if column != "__starlib_source_row__"
+        ]
         payload = working[payload_columns].copy()
         normalized, missing_code_table = _apply_declared_missing_codes(payload, study_design)
         for column in normalized.columns:
@@ -142,7 +144,9 @@ def create_analysis_dataset(
         transformation_tables["missing_codes"] = pd.DataFrame()
 
     if coerce_types:
-        payload_columns = [column for column in working.columns if column != "__starlib_source_row__"]
+        payload_columns = [
+            column for column in working.columns if column != "__starlib_source_row__"
+        ]
         payload = working[payload_columns].copy()
         coerced, coercion_table = _coerce_declared_types(payload, study_design)
         for column in coerced.columns:
@@ -152,7 +156,9 @@ def create_analysis_dataset(
         transformation_tables["type_coercions"] = pd.DataFrame()
 
     filter_list = _normalize_filters(filters)
-    subpopulation = getattr(analysis_design, "subpopulation", None) if analysis_design is not None else None
+    subpopulation = (
+        getattr(analysis_design, "subpopulation", None) if analysis_design is not None else None
+    )
     if subpopulation:
         filter_list.insert(0, subpopulation)
     for number, condition in enumerate(filter_list, start=1):
@@ -178,9 +184,7 @@ def create_analysis_dataset(
 
     duplicate_keys = list(deduplicate_on or ())
     if duplicate_policy not in VALID_DUPLICATE_POLICIES:
-        raise ValueError(
-            f"duplicate_policy must be one of {sorted(VALID_DUPLICATE_POLICIES)}."
-        )
+        raise ValueError(f"duplicate_policy must be one of {sorted(VALID_DUPLICATE_POLICIES)}.")
     duplicate_rows = pd.DataFrame()
     if duplicate_keys:
         missing_keys = [column for column in duplicate_keys if column not in working]
@@ -194,7 +198,9 @@ def create_analysis_dataset(
                 raise ValueError(f"Duplicate analysis keys found at source rows {examples}.")
             if duplicate_policy in {"first", "last"}:
                 keep_mask = ~working.duplicated(subset=duplicate_keys, keep=duplicate_policy)
-                removed_positions = working.loc[~keep_mask, "__starlib_source_row__"].astype(int).tolist()
+                removed_positions = (
+                    working.loc[~keep_mask, "__starlib_source_row__"].astype(int).tolist()
+                )
                 _record_reason(reason_map, removed_positions, "duplicate_removed")
                 working = working.loc[keep_mask].copy()
             # keep does not remove rows
@@ -245,9 +251,7 @@ def create_analysis_dataset(
         output_columns = list(dict.fromkeys(required))
     else:
         output_columns = [
-            column
-            for column in working.columns
-            if column != "__starlib_source_row__"
+            column for column in working.columns if column != "__starlib_source_row__"
         ]
     output = working[output_columns].copy()
 
@@ -261,9 +265,7 @@ def create_analysis_dataset(
                     "reason": reason,
                 }
             )
-    exclusions = pd.DataFrame(
-        exclusion_rows, columns=["source_row", "source_index", "reason"]
-    )
+    exclusions = pd.DataFrame(exclusion_rows, columns=["source_row", "source_index", "reason"])
 
     validation_schema = dict(schema or {})
     validation_schema.setdefault("required_columns", required)

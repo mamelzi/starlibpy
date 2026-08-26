@@ -57,9 +57,7 @@ def json_safe(value: Any) -> Any:
 
 def validate_choice(name: str, value: str, allowed: set[str]) -> None:
     if value not in allowed:
-        raise ValueError(
-            f"Invalid {name}={value!r}. Expected one of {sorted(allowed)}."
-        )
+        raise ValueError(f"Invalid {name}={value!r}. Expected one of {sorted(allowed)}.")
 
 
 def validate_probability(name: str, value: float, *, inclusive: bool = False) -> None:

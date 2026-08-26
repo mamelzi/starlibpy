@@ -98,7 +98,8 @@ class StarResult:
 
     def __post_init__(self) -> None:
         self.tables = {
-            str(name): table.copy(deep=True) if isinstance(table, pd.DataFrame)
+            str(name): table.copy(deep=True)
+            if isinstance(table, pd.DataFrame)
             else pd.DataFrame(table)
             for name, table in self.tables.items()
         }
@@ -130,14 +131,9 @@ class StarResult:
             if len(self.tables) == 1:
                 selected = next(iter(self.tables))
             else:
-                raise ValueError(
-                    "A table name is required. Available tables: "
-                    f"{list(self.tables)}"
-                )
+                raise ValueError(f"A table name is required. Available tables: {list(self.tables)}")
         if selected not in self.tables:
-            raise KeyError(
-                f"Unknown table {selected!r}. Available tables: {list(self.tables)}"
-            )
+            raise KeyError(f"Unknown table {selected!r}. Available tables: {list(self.tables)}")
         table = self.tables[selected]
         return table.copy(deep=True) if copy else table
 
@@ -220,13 +216,15 @@ class ConfidenceIntervalResult(StarResult):
         if not self.tables:
             self.tables = {
                 "estimate": pd.DataFrame(
-                    [{
-                        "estimate": self.estimate,
-                        "ci_lower": self.lower,
-                        "ci_upper": self.upper,
-                        "confidence_level": self.confidence_level,
-                        "method": self.method,
-                    }]
+                    [
+                        {
+                            "estimate": self.estimate,
+                            "ci_lower": self.lower,
+                            "ci_upper": self.upper,
+                            "confidence_level": self.confidence_level,
+                            "method": self.method,
+                        }
+                    ]
                 )
             }
         self.default_table = self.default_table or "estimate"
@@ -262,9 +260,7 @@ class AssumptionReport(StarResult):
 
     def __post_init__(self) -> None:
         if not self.tables:
-            self.tables = {
-                "assumptions": pd.DataFrame([check.to_dict() for check in self.checks])
-            }
+            self.tables = {"assumptions": pd.DataFrame([check.to_dict() for check in self.checks])}
         self.default_table = self.default_table or "assumptions"
         self.default_plot = self.default_plot or "assumptions"
         self.metadata.setdefault("available_plots", ("assumptions",))
@@ -287,11 +283,13 @@ class TestRecommendation(StarResult):
         if not self.tables:
             rows = []
             for method in self.candidate_methods:
-                rows.append({
-                    "method": method,
-                    "recommended": method == self.recommended_method,
-                    "discouraged": method in self.discouraged_methods,
-                })
+                rows.append(
+                    {
+                        "method": method,
+                        "recommended": method == self.recommended_method,
+                        "discouraged": method in self.discouraged_methods,
+                    }
+                )
             self.tables = {"recommendation": pd.DataFrame(rows)}
         self.default_table = self.default_table or "recommendation"
         super().__post_init__()
@@ -315,6 +313,7 @@ class StarTable:
     def display(self) -> Any:
         try:
             from IPython.display import display
+
             return display(self.data.style)
         except Exception:
             print(self.data.to_string(index=False))
@@ -322,6 +321,7 @@ class StarTable:
 
     def export(self, path: str | Path, **kwargs: Any) -> Path:
         from starlibpy.reporting import export_table
+
         return export_table(self, path, **kwargs)
 
     def add_note(self, note: str) -> "StarTable":
@@ -345,11 +345,13 @@ class StarFigure:
 
     def display(self) -> Any:
         import matplotlib.pyplot as plt
+
         plt.show()
         return self.figure
 
     def export(self, path: str | Path, **kwargs: Any) -> Path:
         from starlibpy.reporting import export_plot
+
         return export_plot(self, path, **kwargs)
 
     def add_caption(self, caption: str) -> "StarFigure":

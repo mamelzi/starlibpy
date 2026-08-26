@@ -236,9 +236,7 @@ def test_paired_binary_recommendation() -> None:
         design_type="before_after",
         pairing=PairingSpec(pair_id="pair_id", kind="before_after"),
         variables={
-            "positive": define_variable(
-                "positive", statistical_type="binary", role="outcome"
-            )
+            "positive": define_variable("positive", statistical_type="binary", role="outcome")
         },
     )
     analysis = define_analysis_design(
@@ -259,9 +257,7 @@ def test_survival_analysis_validation_and_recommendation(
         name="Survival cohort",
         subject_id="patient_id",
         variables={
-            "followup": define_variable(
-                "followup", statistical_type="time_to_event", role="time"
-            ),
+            "followup": define_variable("followup", statistical_type="time_to_event", role="time"),
             "event": define_variable("event", statistical_type="binary", role="event"),
         },
     )
@@ -272,12 +268,8 @@ def test_survival_analysis_validation_and_recommendation(
         event_variable="event",
         predictors=["arm"],
     )
-    validation = validate_analysis_design(
-        analysis, independent_data, study_design=study
-    )
-    recommendation = recommend_analysis(
-        analysis, data=independent_data, study_design=study
-    )
+    validation = validate_analysis_design(analysis, independent_data, study_design=study)
+    recommendation = recommend_analysis(analysis, data=independent_data, study_design=study)
     assert validation.valid
     assert recommendation.recommended_family == "survival_analysis"
     assert "cox_regression" in recommendation.candidate_methods
@@ -309,19 +301,13 @@ def test_compatible_analyses_for_longitudinal(longitudinal_data: pd.DataFrame) -
         name="Longitudinal",
         subject_id="patient_id",
         group_variable="arm",
-        repeated_measures=RepeatedMeasuresSpec(
-            subject_id="patient_id", time_variable="visit"
-        ),
+        repeated_measures=RepeatedMeasuresSpec(subject_id="patient_id", time_variable="visit"),
         variables={
-            "score": define_variable(
-                "score", statistical_type="continuous", role="outcome"
-            )
+            "score": define_variable("score", statistical_type="continuous", role="outcome")
         },
         data_layout="long",
     )
-    compatibility = list_compatible_analyses(
-        study, outcome="score", data=longitudinal_data
-    )
+    compatibility = list_compatible_analyses(study, outcome="score", data=longitudinal_data)
     assert "linear_mixed_model" in compatibility.compatible
     assert "mixed_anova" in compatibility.compatible
 

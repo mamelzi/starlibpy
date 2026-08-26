@@ -158,9 +158,7 @@ def test_missing_data_assumption_report_detects_observed_association():
             "z": np.arange(40),
         }
     )
-    result = check_missing_data_assumptions(
-        df, target_columns=["x"], predictors=["group", "z"]
-    )
+    result = check_missing_data_assumptions(df, target_columns=["x"], predictors=["group", "z"])
     target = result.get_table("targets").iloc[0]
     assert target["conclusion"] == "evidence_against_mcar"
     assert result.get_table("overall").iloc[0]["identifies_mar_vs_mnar"] == False
@@ -194,9 +192,7 @@ def test_calculate_duration_scalar_and_vector():
 
 
 def test_calculate_duration_negative_policy():
-    result = calculate_duration(
-        ["2026-02-01"], ["2026-01-01"], unit="days", negative="nan"
-    )
+    result = calculate_duration(["2026-02-01"], ["2026-01-01"], unit="days", negative="nan")
     assert pd.isna(result.values.iloc[0])
     with pytest.raises(ValueError):
         calculate_duration("2026-02-01", "2026-01-01", negative="raise")
@@ -352,7 +348,9 @@ def test_create_analysis_dataset_integrates_design_and_documents_exclusions():
             "id": FakeVariableSpec("identifier", role="subject_id"),
             "group": FakeVariableSpec("categorical", categories=["A", "B"]),
             "outcome": FakeVariableSpec("continuous"),
-            "age": FakeVariableSpec("continuous", plausible_min=0, plausible_max=120, missing_values=[999]),
+            "age": FakeVariableSpec(
+                "continuous", plausible_min=0, plausible_max=120, missing_values=[999]
+            ),
         },
         missing_data_policy="complete_case",
     )
@@ -388,9 +386,7 @@ def test_result_serialization_interfaces():
 
 
 def test_categorical_constant_imputation_adds_category():
-    df = pd.DataFrame(
-        {"x": pd.Series(pd.Categorical(["A", None], categories=["A", "B"]))}
-    )
+    df = pd.DataFrame({"x": pd.Series(pd.Categorical(["A", None], categories=["A", "B"]))})
     result = impute_missing_data(
         df,
         columns=["x"],

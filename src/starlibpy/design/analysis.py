@@ -32,9 +32,9 @@ def get_variable_type(
         if declared != "unknown":
             return declared
     if data is not None and variable_name in data.columns:
-        return infer_variable_types(data, columns=[variable_name]).records[
-            variable_name
-        ].inferred_type
+        return (
+            infer_variable_types(data, columns=[variable_name]).records[variable_name].inferred_type
+        )
     return "unknown"
 
 
@@ -98,9 +98,7 @@ def define_analysis_design(
 ) -> AnalysisDesign:
     """Create an analysis design, inheriting protocol defaults when available."""
     inherited_subject = (
-        subject_id
-        if subject_id is not None
-        else study_design.subject_id if study_design else None
+        subject_id if subject_id is not None else study_design.subject_id if study_design else None
     )
     inherited_pair = (
         pair_id
@@ -155,27 +153,37 @@ def define_analysis_design(
     inherited_strata = (
         as_string_tuple(strata)
         if strata is not None
-        else study_design.strata if study_design else ()
+        else study_design.strata
+        if study_design
+        else ()
     )
     inherited_layout = (
         data_layout
         if data_layout is not None
-        else study_design.data_layout if study_design else "unknown"
+        else study_design.data_layout
+        if study_design
+        else "unknown"
     )
     inherited_unit = (
         analysis_unit
         if analysis_unit is not None
-        else study_design.unit_of_observation if study_design else "subject"
+        else study_design.unit_of_observation
+        if study_design
+        else "subject"
     )
     inherited_confidence = (
         confidence_level
         if confidence_level is not None
-        else study_design.confidence_level if study_design else 0.95
+        else study_design.confidence_level
+        if study_design
+        else 0.95
     )
     inherited_alpha = (
         alpha
         if alpha is not None
-        else study_design.alpha if study_design else 1.0 - inherited_confidence
+        else study_design.alpha
+        if study_design
+        else 1.0 - inherited_confidence
     )
 
     if endpoint and study_design:
@@ -218,9 +226,7 @@ def define_analysis_design(
     }
     for field_name, explicit in explicit_values.items():
         if explicit not in (None, (), [], {}):
-            provenance[field_name] = ProvenanceRecord(
-                source="declared", status="declared"
-            )
+            provenance[field_name] = ProvenanceRecord(source="declared", status="declared")
         elif study_design is not None:
             inherited = inherited_values.get(field_name)
             if inherited not in (None, (), [], {}, "unknown"):
@@ -282,8 +288,14 @@ def check_analysis_requirements(
     required = list(required_columns_for_analysis(analysis))
 
     outcome_required_types = {
-        "comparison", "correlation", "regression", "diagnostic",
-        "longitudinal", "agreement", "equivalence", "noninferiority",
+        "comparison",
+        "correlation",
+        "regression",
+        "diagnostic",
+        "longitudinal",
+        "agreement",
+        "equivalence",
+        "noninferiority",
     }
     if analysis.analysis_type in outcome_required_types and analysis.outcome is None:
         issues.append("An outcome is required for this analysis type.")
@@ -315,9 +327,7 @@ def check_analysis_requirements(
             issues.append("A time variable is required for longitudinal analysis.")
     elif analysis.analysis_type == "agreement":
         if not analysis.predictors:
-            issues.append(
-                "At least one second measurement or rater variable is required."
-            )
+            issues.append("At least one second measurement or rater variable is required.")
     elif analysis.analysis_type in {"equivalence", "noninferiority"}:
         has_margin = analysis.metadata.get("margin") is not None
         if (
@@ -333,18 +343,25 @@ def check_analysis_requirements(
     if analysis.independence_structure in {"paired", "matched"} and not analysis.pair_id:
         issues.append("A pair identifier is required for paired or matched data.")
     if analysis.independence_structure in {
-        "repeated", "longitudinal", "crossover", "mixed",
+        "repeated",
+        "longitudinal",
+        "crossover",
+        "mixed",
     }:
         if not analysis.subject_id:
             issues.append("A subject identifier is required for repeated observations.")
-        if (
-            not analysis.time_variable
-            and analysis.analysis_type in {"longitudinal", "comparison"}
-        ):
+        if not analysis.time_variable and analysis.analysis_type in {"longitudinal", "comparison"}:
             recommendations.append("Declare a time or within-subject factor.")
-    if analysis.independence_structure in {
-        "clustered", "nested", "crossed", "mixed",
-    } and not analysis.cluster_ids:
+    if (
+        analysis.independence_structure
+        in {
+            "clustered",
+            "nested",
+            "crossed",
+            "mixed",
+        }
+        and not analysis.cluster_ids
+    ):
         issues.append("At least one cluster identifier is required.")
 
     missing_columns: list[str] = []
@@ -380,8 +397,7 @@ def derive_analysis_population(
     policy = missing_policy or analysis.missing_data_policy
     if policy not in VALID_MISSING_POLICIES:
         raise ValueError(
-            f"Invalid missing_policy={policy!r}. "
-            f"Expected one of {sorted(VALID_MISSING_POLICIES)}."
+            f"Invalid missing_policy={policy!r}. Expected one of {sorted(VALID_MISSING_POLICIES)}."
         )
     columns = tuple(required_columns or analysis.required_columns)
     missing_columns = [column for column in columns if column not in data.columns]
@@ -489,17 +505,13 @@ def list_compatible_analyses(
     incompatible: dict[str, tuple[str, ...]] = {}
 
     if outcome_type in {"continuous", "discrete", "duration", "unknown"}:
-        compatible.extend(
-            ("compare_continuous", "correlation_analysis", "linear_regression")
-        )
+        compatible.extend(("compare_continuous", "correlation_analysis", "linear_regression"))
         if structure in {"independent", "clustered", "nested", "crossed"}:
             compatible.extend(("anova", "ancova"))
         if structure in {"paired", "matched"}:
             compatible.append("compare_paired_continuous")
         if structure in {"repeated", "longitudinal", "mixed", "crossover"}:
-            compatible.extend(
-                ("repeated_measures_anova", "mixed_anova", "linear_mixed_model")
-            )
+            compatible.extend(("repeated_measures_anova", "mixed_anova", "linear_mixed_model"))
             conditional["repeated_measures_anova"] = (
                 "Requires sufficiently complete and appropriately balanced data.",
             )
@@ -508,7 +520,11 @@ def list_compatible_analyses(
         if structure in {"paired", "matched"}:
             compatible.append("compare_paired_proportions")
         if structure in {
-            "repeated", "longitudinal", "mixed", "clustered", "nested",
+            "repeated",
+            "longitudinal",
+            "mixed",
+            "clustered",
+            "nested",
         }:
             compatible.append("generalized_estimating_equations")
             conditional["generalized_linear_mixed_model"] = (
@@ -533,8 +549,7 @@ def list_compatible_analyses(
         compatible.append("survival_analysis")
 
     if any(
-        endpoint.endpoint_type == "time_to_event"
-        for endpoint in study_design.endpoints.values()
+        endpoint.endpoint_type == "time_to_event" for endpoint in study_design.endpoints.values()
     ):
         compatible.append("survival_analysis")
     roles = {spec.role for spec in study_design.variables.values()}
@@ -547,17 +562,27 @@ def list_compatible_analyses(
 
     compatible = list(dict.fromkeys(compatible))
     major = {
-        "compare_continuous", "compare_paired_continuous",
-        "compare_proportions", "compare_paired_proportions",
-        "compare_categorical", "correlation_analysis", "anova", "ancova",
-        "repeated_measures_anova", "mixed_anova", "linear_mixed_model",
-        "linear_regression", "logistic_regression", "diagnostic_accuracy",
-        "roc_analysis", "survival_analysis", "agreement_analysis",
+        "compare_continuous",
+        "compare_paired_continuous",
+        "compare_proportions",
+        "compare_paired_proportions",
+        "compare_categorical",
+        "correlation_analysis",
+        "anova",
+        "ancova",
+        "repeated_measures_anova",
+        "mixed_anova",
+        "linear_mixed_model",
+        "linear_regression",
+        "logistic_regression",
+        "diagnostic_accuracy",
+        "roc_analysis",
+        "survival_analysis",
+        "agreement_analysis",
     }
     for method in sorted(major - set(compatible) - set(conditional)):
         incompatible[method] = (
-            f"Not directly supported by outcome type {outcome_type!r} and "
-            f"structure {structure!r}.",
+            f"Not directly supported by outcome type {outcome_type!r} and structure {structure!r}.",
         )
 
     return AnalysisCompatibilityReport(
@@ -623,48 +648,59 @@ def recommend_analysis(
             if structure in {"paired", "matched"}:
                 family = "compare_paired_continuous"
                 methods = (
-                    "paired_t", "wilcoxon_signed_rank", "sign_test",
+                    "paired_t",
+                    "wilcoxon_signed_rank",
+                    "sign_test",
                     "paired_permutation",
                 )
                 assumptions = (
-                    "normality_of_within_pair_differences", "pair_completeness",
+                    "normality_of_within_pair_differences",
+                    "pair_completeness",
                     "influential_outliers",
                 )
-                discouraged["independent_samples_tests"] = (
-                    "Observations are paired or matched.",
-                )
+                discouraged["independent_samples_tests"] = ("Observations are paired or matched.",)
             elif structure in {"repeated", "longitudinal", "crossover", "mixed"}:
                 family = "longitudinal_analysis"
                 methods = (
-                    "linear_mixed_model", "repeated_measures_anova", "friedman",
+                    "linear_mixed_model",
+                    "repeated_measures_anova",
+                    "friedman",
                 )
                 assumptions = (
-                    "residual_distribution", "covariance_structure",
+                    "residual_distribution",
+                    "covariance_structure",
                     "sphericity_if_rm_anova",
                 )
             elif n_levels > 2:
                 family = "anova"
                 methods = (
-                    "welch_anova", "classical_anova", "kruskal_wallis",
+                    "welch_anova",
+                    "classical_anova",
+                    "kruskal_wallis",
                     "permutation_anova",
                 )
                 assumptions = (
-                    "residual_normality", "variance_homogeneity", "independence",
+                    "residual_normality",
+                    "variance_homogeneity",
+                    "independence",
                     "influential_outliers",
                 )
             else:
                 family = "compare_continuous"
                 methods = (
-                    "welch_t", "student_t", "mann_whitney", "brunner_munzel",
+                    "welch_t",
+                    "student_t",
+                    "mann_whitney",
+                    "brunner_munzel",
                     "permutation",
                 )
                 assumptions = (
-                    "independence", "distribution_shape", "variance_homogeneity",
+                    "independence",
+                    "distribution_shape",
+                    "variance_homogeneity",
                     "influential_outliers",
                 )
-                discouraged["paired_tests"] = (
-                    "No pairing structure is declared.",
-                )
+                discouraged["paired_tests"] = ("No pairing structure is declared.",)
         elif outcome_type == "binary":
             if structure in {"paired", "matched"}:
                 family = "compare_paired_proportions"
@@ -674,7 +710,8 @@ def recommend_analysis(
                 family = "repeated_binary_analysis"
                 methods = ("cochran_q", "gee_logistic", "logistic_mixed_model")
                 assumptions = (
-                    "within_subject_structure", "cluster_count",
+                    "within_subject_structure",
+                    "cluster_count",
                     "model_convergence",
                 )
             else:
@@ -689,11 +726,14 @@ def recommend_analysis(
             else:
                 family = "compare_categorical"
                 methods = (
-                    "chi_square", "fisher_exact", "monte_carlo_exact",
+                    "chi_square",
+                    "fisher_exact",
+                    "monte_carlo_exact",
                     "trend_test",
                 )
                 assumptions = (
-                    "independence", "expected_cell_counts",
+                    "independence",
+                    "expected_cell_counts",
                     "category_order_if_trend",
                 )
         else:
@@ -706,25 +746,26 @@ def recommend_analysis(
         family = "correlation_analysis"
         methods = ("pearson", "spearman", "kendall")
         assumptions = (
-            "linearity_for_pearson", "monotonicity", "influential_outliers",
+            "linearity_for_pearson",
+            "monotonicity",
+            "influential_outliers",
             "independence",
         )
 
     elif analysis.analysis_type == "regression":
         if outcome_type in {"continuous", "discrete", "duration"}:
-            family = (
-                "linear_regression"
-                if structure == "independent"
-                else "linear_mixed_model"
-            )
+            family = "linear_regression" if structure == "independent" else "linear_mixed_model"
             methods = (
                 ("ols", "ols_hc3", "robust_linear_regression")
                 if structure == "independent"
                 else ("linear_mixed_model", "gee_gaussian")
             )
             assumptions = (
-                "linearity", "residual_homoscedasticity", "multicollinearity",
-                "influence", "independence_or_declared_correlation",
+                "linearity",
+                "residual_homoscedasticity",
+                "multicollinearity",
+                "influence",
+                "independence_or_declared_correlation",
             )
         elif outcome_type == "binary":
             family = (
@@ -738,27 +779,34 @@ def recommend_analysis(
                 else ("gee_logistic", "logistic_mixed_model")
             )
             assumptions = (
-                "separation", "linearity_in_logit", "multicollinearity",
-                "influence", "model_convergence",
+                "separation",
+                "linearity_in_logit",
+                "multicollinearity",
+                "influence",
+                "model_convergence",
             )
         elif outcome_type == "ordinal":
             family = "ordinal_logistic_regression"
             methods = ("proportional_odds", "partial_proportional_odds")
             assumptions = (
-                "proportional_odds", "multicollinearity", "model_convergence",
+                "proportional_odds",
+                "multicollinearity",
+                "model_convergence",
             )
         elif outcome_type == "categorical":
             family = "multinomial_logistic_regression"
             methods = ("multinomial_logit",)
             assumptions = (
-                "adequate_category_counts", "multicollinearity",
+                "adequate_category_counts",
+                "multicollinearity",
                 "model_convergence",
             )
         elif outcome_type == "count":
             family = "count_regression"
             methods = ("poisson", "negative_binomial", "zero_inflated")
             assumptions = (
-                "overdispersion", "excess_zeros",
+                "overdispersion",
+                "excess_zeros",
                 "independence_or_declared_correlation",
             )
         else:
@@ -769,10 +817,13 @@ def recommend_analysis(
     elif analysis.analysis_type == "diagnostic":
         family = "diagnostic_accuracy"
         methods = (
-            "diagnostic_accuracy", "roc_analysis", "precision_recall_analysis",
+            "diagnostic_accuracy",
+            "roc_analysis",
+            "precision_recall_analysis",
         )
         assumptions = (
-            "binary_reference_standard", "paired_index_and_reference_measurements",
+            "binary_reference_standard",
+            "paired_index_and_reference_measurements",
             "predefined_or_exploratory_threshold",
         )
 
@@ -780,7 +831,8 @@ def recommend_analysis(
         family = "survival_analysis"
         methods = ("kaplan_meier", "logrank", "cox_regression", "rmst")
         assumptions = (
-            "nonnegative_time", "valid_censoring",
+            "nonnegative_time",
+            "valid_censoring",
             "proportional_hazards_for_cox",
             "independent_or_modeled_clusters",
         )
@@ -789,17 +841,23 @@ def recommend_analysis(
         family = "longitudinal_analysis"
         methods = ("linear_mixed_model", "gee", "repeated_measures_anova")
         assumptions = (
-            "subject_time_uniqueness", "covariance_structure",
-            "model_convergence", "sphericity_if_rm_anova",
+            "subject_time_uniqueness",
+            "covariance_structure",
+            "model_convergence",
+            "sphericity_if_rm_anova",
         )
 
     elif analysis.analysis_type == "agreement":
         family = "agreement_analysis"
         methods = (
-            "bland_altman", "intraclass_correlation", "categorical_agreement",
+            "bland_altman",
+            "intraclass_correlation",
+            "categorical_agreement",
         )
         assumptions = (
-            "measurement_scale", "replicate_structure", "systematic_bias",
+            "measurement_scale",
+            "replicate_structure",
+            "systematic_bias",
             "heteroscedasticity",
         )
 
@@ -807,18 +865,21 @@ def recommend_analysis(
         family = "equivalence_test"
         methods = ("tost_continuous", "equivalence_proportion", "paired_tost")
         assumptions = (
-            "predefined_margin", "direction_of_benefit",
+            "predefined_margin",
+            "direction_of_benefit",
             "design_specific_distributional_assumptions",
         )
 
     elif analysis.analysis_type == "noninferiority":
         family = "noninferiority_test"
         methods = (
-            "noninferiority_continuous", "noninferiority_proportion",
+            "noninferiority_continuous",
+            "noninferiority_proportion",
             "noninferiority_survival",
         )
         assumptions = (
-            "predefined_margin", "direction_of_benefit",
+            "predefined_margin",
+            "direction_of_benefit",
             "analysis_population_strategy",
         )
 
@@ -826,7 +887,8 @@ def recommend_analysis(
         family = "summarize_adverse_events"
         methods = ("patient_incidence", "event_rate", "time_to_first_event")
         assumptions = (
-            "event_definition", "denominator_definition",
+            "event_definition",
+            "denominator_definition",
             "recurrent_event_structure",
         )
 
@@ -834,7 +896,8 @@ def recommend_analysis(
         family = "evaluate_recist11"
         methods = ("recist11",)
         assumptions = (
-            "validated_recist_data_model", "baseline_and_nadir_rules",
+            "validated_recist_data_model",
+            "baseline_and_nadir_rules",
             "new_lesion_definition",
         )
         confidence = 0.5
@@ -878,15 +941,9 @@ def explain_analysis_design(
     """Return a concise, human-readable explanation of an AnalysisDesign."""
     if not isinstance(analysis, AnalysisDesign):
         raise TypeError("analysis must be an AnalysisDesign.")
-    selected_language = (
-        language or (study_design.language if study_design else "en")
-    ).lower()
-    recommendation = recommend_analysis(
-        analysis, data=data, study_design=study_design
-    )
-    requirements = check_analysis_requirements(
-        analysis, data=data, study_design=study_design
-    )
+    selected_language = (language or (study_design.language if study_design else "en")).lower()
+    recommendation = recommend_analysis(analysis, data=data, study_design=study_design)
+    requirements = check_analysis_requirements(analysis, data=data, study_design=study_design)
 
     if selected_language.startswith("fr"):
         lines = [
@@ -896,8 +953,7 @@ def explain_analysis_design(
             f"Structure des observations : {analysis.independence_structure}",
             f"Unité d’analyse : {analysis.analysis_unit}",
             f"Famille recommandée : {recommendation.recommended_family}",
-            "Méthodes candidates : "
-            + (", ".join(recommendation.candidate_methods) or "aucune"),
+            "Méthodes candidates : " + (", ".join(recommendation.candidate_methods) or "aucune"),
             "Conditions à vérifier : "
             + (", ".join(recommendation.assumptions_to_check) or "aucune spécifique"),
             f"Mode méthodologique : {analysis.method_mode}",
@@ -905,9 +961,7 @@ def explain_analysis_design(
             f"Gestion des données manquantes : {analysis.missing_data_policy}",
         ]
         if requirements.issues:
-            lines.append(
-                "Exigences non satisfaites : " + " | ".join(requirements.issues)
-            )
+            lines.append("Exigences non satisfaites : " + " | ".join(requirements.issues))
         if recommendation.rationale:
             lines.append("Justification : " + " ".join(recommendation.rationale))
         return "\n".join(lines)
@@ -919,8 +973,7 @@ def explain_analysis_design(
         f"Observation structure: {analysis.independence_structure}",
         f"Analysis unit: {analysis.analysis_unit}",
         f"Recommended family: {recommendation.recommended_family}",
-        "Candidate methods: "
-        + (", ".join(recommendation.candidate_methods) or "none"),
+        "Candidate methods: " + (", ".join(recommendation.candidate_methods) or "none"),
         "Assumptions to check: "
         + (", ".join(recommendation.assumptions_to_check) or "none specific"),
         f"Method mode: {analysis.method_mode}",

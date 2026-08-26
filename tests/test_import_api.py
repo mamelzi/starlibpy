@@ -4,7 +4,9 @@ import starlibpy as slp
 
 def test_canonical_identity_and_import_api():
     assert slp.__project__ == "Starlibpy"
-    assert slp.__project_full_name__ == "Starlibpy — Statistical Tools for Academic Research Library"
+    assert (
+        slp.__project_full_name__ == "Starlibpy — Statistical Tools for Academic Research Library"
+    )
     assert slp.__author__ == "Dr. M.A. Melzi, MD"
     assert slp.__version__ == "0.3.0b1"
     assert callable(slp.describe_continuous)

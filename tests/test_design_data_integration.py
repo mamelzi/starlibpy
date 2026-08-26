@@ -20,9 +20,7 @@ def test_real_design_module_integration():
         }
     )
     variables = [
-        design.define_variable(
-            "patient_id", statistical_type="identifier", role="subject_id"
-        ),
+        design.define_variable("patient_id", statistical_type="identifier", role="subject_id"),
         design.define_variable(
             "group",
             statistical_type="categorical",
@@ -79,9 +77,7 @@ def test_real_design_module_integration():
         "continuous",
     }
     assert validate_dataset(df, study_design=study).passed
-    prepared = create_analysis_dataset(
-        df, study_design=study, analysis_design=analysis
-    )
+    prepared = create_analysis_dataset(df, study_design=study, analysis_design=analysis)
     assert len(prepared.data) == 3
     assert set(prepared.required_columns) == {
         "score",

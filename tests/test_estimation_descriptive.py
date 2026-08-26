@@ -17,7 +17,7 @@ def test_ci_proportion_methods_and_alias():
 def test_ci_mean_matches_student_formula():
     x = np.array([1.0, 2.0, 4.0, 7.0, 8.0])
     result = slp.ci_mean(x, method="t")
-    expected = stats.t.interval(0.95, len(x)-1, loc=x.mean(), scale=stats.sem(x))
+    expected = stats.t.interval(0.95, len(x) - 1, loc=x.mean(), scale=stats.sem(x))
     assert result.estimate == pytest.approx(x.mean())
     assert result.interval == pytest.approx(expected)
 
@@ -64,7 +64,12 @@ def test_table_one_and_render_table():
             "sex": ["F", "M", "F", "F", "M", "M", "M", "F", "M", "F"],
         }
     )
-    result = slp.table_one(df, ["age", "sex"], group="group", variable_types={"age": "continuous", "sex": "categorical"})
+    result = slp.table_one(
+        df,
+        ["age", "sex"],
+        group="group",
+        variable_types={"age": "continuous", "sex": "categorical"},
+    )
     assert not result.get_table().empty
     table = slp.render_table(result, template="journal")
     assert isinstance(table, slp.StarTable)

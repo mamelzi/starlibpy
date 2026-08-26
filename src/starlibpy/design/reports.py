@@ -121,8 +121,13 @@ class DesignValidationReport:
 
     def to_frame(self) -> pd.DataFrame:
         columns = [
-            "code", "severity", "field", "message", "observed",
-            "expected", "suggestion",
+            "code",
+            "severity",
+            "field",
+            "message",
+            "observed",
+            "expected",
+            "suggestion",
         ]
         if not self.issues:
             return pd.DataFrame(columns=columns)

@@ -221,9 +221,15 @@ def detect_outliers(
     missing_groups = [column for column in group_columns if column not in frame]
     if missing_groups:
         raise KeyError(f"Grouping columns not found: {missing_groups}")
-    selected = list(columns) if columns is not None else [
-        column for column in frame.select_dtypes(include=np.number).columns if column not in group_columns
-    ]
+    selected = (
+        list(columns)
+        if columns is not None
+        else [
+            column
+            for column in frame.select_dtypes(include=np.number).columns
+            if column not in group_columns
+        ]
+    )
     missing = [column for column in selected if column not in frame]
     if missing:
         raise KeyError(f"Columns not found: {missing}")
@@ -430,9 +436,7 @@ def calculate_duration(
     if errors not in VALID_DURATION_ERRORS:
         raise ValueError(f"errors must be one of {sorted(VALID_DURATION_ERRORS)}.")
     if negative not in VALID_NEGATIVE_DURATION_POLICIES:
-        raise ValueError(
-            f"negative must be one of {sorted(VALID_NEGATIVE_DURATION_POLICIES)}."
-        )
+        raise ValueError(f"negative must be one of {sorted(VALID_NEGATIVE_DURATION_POLICIES)}.")
 
     start_raw, start_scalar = _as_series(start, data=data, name="start")
     end_raw, end_scalar = _as_series(end, data=data, name="end")
@@ -490,10 +494,7 @@ def calculate_duration(
         }
     )
     status_summary = (
-        status.value_counts(dropna=False)
-        .rename_axis("status")
-        .rename("n")
-        .reset_index()
+        status.value_counts(dropna=False).rename_axis("status").rename("n").reset_index()
     )
     status_summary["percent"] = 100 * status_summary["n"] / len(table) if len(table) else 0.0
 
@@ -574,9 +575,7 @@ def standardize_categories(
     if missing:
         raise KeyError(f"Columns not found: {missing}")
     if unknown not in VALID_UNKNOWN_CATEGORY_POLICIES:
-        raise ValueError(
-            f"unknown must be one of {sorted(VALID_UNKNOWN_CATEGORY_POLICIES)}."
-        )
+        raise ValueError(f"unknown must be one of {sorted(VALID_UNKNOWN_CATEGORY_POLICIES)}.")
     output_columns = dict(output_columns or {})
     mapping_rows: list[dict[str, Any]] = []
     warnings: list[str] = []
@@ -725,9 +724,7 @@ def encode_binary(
     if column not in before:
         raise KeyError(f"Column {column!r} not found.")
     if unknown not in VALID_BINARY_UNKNOWN_POLICIES:
-        raise ValueError(
-            f"unknown must be one of {sorted(VALID_BINARY_UNKNOWN_POLICIES)}."
-        )
+        raise ValueError(f"unknown must be one of {sorted(VALID_BINARY_UNKNOWN_POLICIES)}.")
     output = output_column or f"{column}_binary"
     if output != column and output in before:
         raise ValueError(f"Output column {output!r} already exists.")
@@ -749,7 +746,11 @@ def encode_binary(
     else:
         negative_mask = source.notna() & ~positive_mask
     result.loc[negative_mask] = 0
-    unknown_mask = source.notna() & ~source.isin(positives | negatives) if negatives else pd.Series(False, index=source.index)
+    unknown_mask = (
+        source.notna() & ~source.isin(positives | negatives)
+        if negatives
+        else pd.Series(False, index=source.index)
+    )
     if unknown_mask.any():
         if unknown == "error":
             values = tuple(source.loc[unknown_mask].drop_duplicates().tolist())

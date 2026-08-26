@@ -127,13 +127,9 @@ def reshape_repeated_data(
         if duplicate_mask.any():
             if duplicate_policy == "error":
                 examples = tuple(before.index[duplicate_mask][:10])
-                raise ValueError(
-                    f"Duplicate subject × time observations found at rows {examples}."
-                )
+                raise ValueError(f"Duplicate subject × time observations found at rows {examples}.")
             if duplicate_policy in {"first", "last"}:
-                working = working.drop_duplicates(
-                    subset=key_columns, keep=duplicate_policy
-                )
+                working = working.drop_duplicates(subset=key_columns, keep=duplicate_policy)
             # aggregate is handled by pivot_table below
 
         if duplicate_policy == "aggregate":
@@ -167,9 +163,8 @@ def reshape_repeated_data(
                 warnings.append(
                     "Some static columns vary within subject; the first observed value was retained."
                 )
-            static_frame = (
-                working[[subject_id] + static]
-                .drop_duplicates(subset=[subject_id], keep="first")
+            static_frame = working[[subject_id] + static].drop_duplicates(
+                subset=[subject_id], keep="first"
             )
             after = static_frame.merge(pivot, on=subject_id, how="right")
         else:
@@ -245,9 +240,10 @@ def align_repeated_measurements(
     for column in (subject_id, time_variable):
         if column not in before:
             raise KeyError(f"Column {column!r} not found.")
-    values = list(value_columns or [
-        column for column in before.columns if column not in {subject_id, time_variable}
-    ])
+    values = list(
+        value_columns
+        or [column for column in before.columns if column not in {subject_id, time_variable}]
+    )
     missing_values = [column for column in values if column not in before]
     if missing_values:
         raise KeyError(f"Value columns not found: {missing_values}")
@@ -259,16 +255,12 @@ def align_repeated_measurements(
         raise ValueError("unscheduled must be keep, drop, or error.")
 
     working = before.copy(deep=True)
-    duplicate_mask = working.duplicated(
-        subset=[subject_id, time_variable], keep=False
-    )
+    duplicate_mask = working.duplicated(subset=[subject_id, time_variable], keep=False)
     duplicate_rows = working.loc[duplicate_mask].copy()
     if duplicate_mask.any():
         if duplicate_policy == "error":
             examples = tuple(working.index[duplicate_mask][:10])
-            raise ValueError(
-                f"Duplicate subject × time observations found at rows {examples}."
-            )
+            raise ValueError(f"Duplicate subject × time observations found at rows {examples}.")
         if duplicate_policy in {"first", "last"}:
             working = working.drop_duplicates(
                 subset=[subject_id, time_variable], keep=duplicate_policy
@@ -310,16 +302,13 @@ def align_repeated_measurements(
     # Record absent planned measurements before optional grid completion.
     missing_schedule_rows: list[dict[str, Any]] = []
     if expected:
-        observed_before_grid = (
-            working.groupby(subject_id, dropna=False, observed=False)[time_variable]
-            .apply(lambda x: set(x.dropna().astype(object)))
-        )
+        observed_before_grid = working.groupby(subject_id, dropna=False, observed=False)[
+            time_variable
+        ].apply(lambda x: set(x.dropna().astype(object)))
         for subject, observed in observed_before_grid.items():
             for time_value in expected:
                 if time_value not in observed:
-                    missing_schedule_rows.append(
-                        {"subject": subject, "missing_time": time_value}
-                    )
+                    missing_schedule_rows.append({"subject": subject, "missing_time": time_value})
     missing_schedule = pd.DataFrame(missing_schedule_rows)
 
     if complete_grid:
@@ -339,7 +328,9 @@ def align_repeated_measurements(
         after = working
 
     if sort:
-        after = after.sort_values([subject_id, time_variable], kind="mergesort").reset_index(drop=True)
+        after = after.sort_values([subject_id, time_variable], kind="mergesort").reset_index(
+            drop=True
+        )
 
     observed_schedule = (
         after.groupby(subject_id, dropna=False, observed=False)[time_variable]
@@ -353,17 +344,14 @@ def align_repeated_measurements(
     )
     if expected:
         expected_set = set(expected)
-        observed_sets = (
-            after.groupby(subject_id, dropna=False, observed=False)[time_variable]
-            .apply(lambda x: set(x.dropna().astype(object)))
-        )
+        observed_sets = after.groupby(subject_id, dropna=False, observed=False)[
+            time_variable
+        ].apply(lambda x: set(x.dropna().astype(object)))
         observed_schedule["n_expected_times"] = len(expected)
         observed_schedule["n_missing_expected_times"] = observed_schedule[subject_id].map(
             lambda subject: len(expected_set - observed_sets.get(subject, set()))
         )
-        observed_schedule["complete_schedule"] = observed_schedule[
-            "n_missing_expected_times"
-        ].eq(0)
+        observed_schedule["complete_schedule"] = observed_schedule["n_missing_expected_times"].eq(0)
 
     time_summary = (
         after.groupby(time_variable, dropna=False, observed=False)

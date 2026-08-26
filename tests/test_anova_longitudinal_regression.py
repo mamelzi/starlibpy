@@ -40,12 +40,21 @@ def regression_data():
     p = 1 / (1 + np.exp(-(-4 + 0.06 * age + 0.8 * treatment)))
     binary = rng.binomial(1, p)
     count = rng.poisson(np.exp(-1 + 0.02 * age + 0.3 * treatment))
-    return pd.DataFrame({"y": y, "age": age, "treatment": treatment, "binary": binary, "count": count})
+    return pd.DataFrame(
+        {"y": y, "age": age, "treatment": treatment, "binary": binary, "count": count}
+    )
 
 
 def test_one_way_anova_and_posthoc():
     df = independent_data()
-    result = slp.anova(df, outcome="x", factors="group", method="welch", posthoc=True, posthoc_method="games_howell")
+    result = slp.anova(
+        df,
+        outcome="x",
+        factors="group",
+        method="welch",
+        posthoc=True,
+        posthoc_method="games_howell",
+    )
     assert result.get_table("anova").iloc[0].method == "welch"
     assert not result.get_table("posthoc").empty
     nonparametric = slp.nonparametric_anova(df, outcome="x", group="group")
@@ -67,16 +76,22 @@ def test_repeated_anova_nonparametric_and_trajectory_summary():
     assert not rm.get_table("anova").empty
     friedman = slp.nonparametric_repeated(df, subject="subject", within="time", outcome="score")
     assert friedman.get_table().iloc[0].method == "friedman"
-    trajectories = slp.summarize_subject_trajectories(df, subject="subject", time="time", outcome="score")
+    trajectories = slp.summarize_subject_trajectories(
+        df, subject="subject", time="time", outcome="score"
+    )
     assert trajectories.get_table("summary").iloc[0].n_subjects == 24
 
 
 def test_linear_mixed_model_and_gee():
     df = repeated_data()
-    mixed = slp.linear_mixed_model(df, outcome="score", groups="subject", fixed_effects=["time", "group"], reml=False)
+    mixed = slp.linear_mixed_model(
+        df, outcome="score", groups="subject", fixed_effects=["time", "group"], reml=False
+    )
     assert not mixed.get_table().empty
     assert mixed.get_table("fit").iloc[0].n_groups == 24
-    gee = slp.generalized_estimating_equations(df, outcome="score", groups="subject", predictors=["time", "group"])
+    gee = slp.generalized_estimating_equations(
+        df, outcome="score", groups="subject", predictors=["time", "group"]
+    )
     assert not gee.get_table().empty
 
 
