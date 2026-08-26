@@ -12,7 +12,6 @@ Dr. M.A. Melzi, MD
 # Public modules remain directly accessible: slp.design, slp.data, slp.colors, etc.
 from . import (
     agreement,
-    anova,
     association,
     assumptions,
     clinical,
