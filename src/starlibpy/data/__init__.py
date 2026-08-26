@@ -5,6 +5,7 @@ new DataFrame together with audit tables and metadata. Statistical analyses and
 publication rendering remain separate responsibilities.
 """
 
+from .._version import __version__ as _PACKAGE_VERSION
 from .analysis_dataset import create_analysis_dataset
 from .audit import audit_transformations
 from .imputation import impute_missing_data, pool_imputed_results
@@ -46,7 +47,7 @@ from .transformations import (
 )
 from .validation import detect_duplicates, validate_dataset, validate_ranges
 
-__version__ = "0.3.0b1"
+__version__ = _PACKAGE_VERSION
 
 __all__ = [
     # Core result objects

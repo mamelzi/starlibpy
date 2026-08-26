@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.3.0b2 — 2026-08-26
+
+Publication-candidate cleanup of the 0.3.0 beta architecture.
+
+### Changed
+
+- Replaced root and internal star imports with explicit public APIs.
+- Preserved the 364-symbol root API used by `import starlibpy as slp`.
+- Centralized the build version in `starlibpy._version`.
+- Modernized imports, annotations, UTC handling, and code formatting.
+- Removed unused imports and resolved all Ruff warnings.
+- Raised the minimum setuptools build backend to 77.0.3 for PEP 639 license metadata support.
+
+### Validation
+
+- `python -m ruff check src tests`: passed.
+- `python -m ruff format --check src tests`: passed.
+- `python -m pytest -q`: 95 tests passed.
+- `python -m pip check`: no broken requirements.
+
 ## 0.3.0b1 — 2026-08-24
 
 Complete architectural replacement of the former flat package.
