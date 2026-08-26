@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use Starlibpy, cite this software and the upstream scientific libraries used by your analysis."
+title: "Starlibpy: Statistical Tools for Academic Research Library"
+type: software
+version: "0.3.0b1"
+date-released: 2026-08-24
+authors:
+  - family-names: Melzi
+    given-names: M. A.
+    name-suffix: MD
+license: MIT
+abstract: >-
+  Starlibpy is a modular Python library for study-design specification,
+  data quality, statistical analysis, diagnostics, scientific visualization,
+  and publication-ready reporting in academic, clinical, epidemiological,
+  and biomedical research.
+keywords:
+  - statistics
+  - academic research
+  - biomedical research
+  - clinical research
+  - epidemiology
+  - survival analysis
+  - diagnostic accuracy

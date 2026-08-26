@@ -1,0 +1,6 @@
+include README.md LICENSE CITATION.cff AUTHORS.md ACKNOWLEDGMENTS.md REFERENCES.bib THIRD_PARTY_LICENSES.md CHANGELOG.md TEST_REPORT.md BUILD_MANIFEST.md VERSION
+recursive-include docs *.md *.py
+recursive-include examples *.py
+recursive-include src/starlibpy py.typed
+
+recursive-include tests *.py

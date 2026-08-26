@@ -1,0 +1,52 @@
+﻿# Virtual environments
+.venv/
+venv/
+env/
+
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Test and analysis caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.hypothesis/
+.coverage
+.coverage.*
+htmlcov/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+*.whl
+*.tar.gz
+
+# Documentation builds
+docs/_build/
+site/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.code-workspace
+
+# Environment and secrets
+.env
+.env.*
+*.key
+*.pem
+.pypirc
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+~$*
