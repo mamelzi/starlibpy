@@ -5,7 +5,6 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 from typing import Any
 
-import numpy as np
 import pandas as pd
 
 from ._utils import as_string_tuple, required_columns_for_analysis, stable_unique
