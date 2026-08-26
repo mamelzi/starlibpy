@@ -60,14 +60,14 @@ class VariableSpec:
         return json_safe(payload)
 
     @classmethod
-    def from_dict(cls, data: Mapping[str, Any]) -> "VariableSpec":
+    def from_dict(cls, data: Mapping[str, Any]) -> VariableSpec:
         payload = dict(data)
         payload.pop("object_type", None)
         payload["categories"] = as_tuple(payload.get("categories"))
         payload["missing_values"] = as_tuple(payload.get("missing_values"))
         return cls(**payload)
 
-    def copy_with(self, **changes: Any) -> "VariableSpec":
+    def copy_with(self, **changes: Any) -> VariableSpec:
         return replace(self, **changes)
 
 
@@ -129,13 +129,13 @@ class EndpointSpec:
         return json_safe(payload)
 
     @classmethod
-    def from_dict(cls, data: Mapping[str, Any]) -> "EndpointSpec":
+    def from_dict(cls, data: Mapping[str, Any]) -> EndpointSpec:
         payload = dict(data)
         payload.pop("object_type", None)
         payload["competing_event_values"] = as_tuple(payload.get("competing_event_values"))
         return cls(**payload)
 
-    def copy_with(self, **changes: Any) -> "EndpointSpec":
+    def copy_with(self, **changes: Any) -> EndpointSpec:
         return replace(self, **changes)
 
 
@@ -162,7 +162,7 @@ class PairingSpec:
         return json_safe(payload)
 
     @classmethod
-    def from_dict(cls, data: Mapping[str, Any]) -> "PairingSpec":
+    def from_dict(cls, data: Mapping[str, Any]) -> PairingSpec:
         payload = dict(data)
         payload.pop("object_type", None)
         payload["matching_variables"] = as_string_tuple(payload.get("matching_variables"))
@@ -193,7 +193,7 @@ class RepeatedMeasuresSpec:
         return json_safe(payload)
 
     @classmethod
-    def from_dict(cls, data: Mapping[str, Any]) -> "RepeatedMeasuresSpec":
+    def from_dict(cls, data: Mapping[str, Any]) -> RepeatedMeasuresSpec:
         payload = dict(data)
         payload.pop("object_type", None)
         payload["within_factors"] = as_string_tuple(payload.get("within_factors"))
@@ -223,7 +223,7 @@ class ClusterSpec:
         return json_safe(payload)
 
     @classmethod
-    def from_dict(cls, data: Mapping[str, Any]) -> "ClusterSpec":
+    def from_dict(cls, data: Mapping[str, Any]) -> ClusterSpec:
         payload = dict(data)
         payload.pop("object_type", None)
         return cls(**payload)

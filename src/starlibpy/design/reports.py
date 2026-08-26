@@ -34,7 +34,7 @@ class ProvenanceRecord:
         return json_safe(asdict(self))
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> "ProvenanceRecord":
+    def from_dict(cls, data: dict[str, Any]) -> ProvenanceRecord:
         return cls(**dict(data))
 
 
@@ -103,7 +103,7 @@ class DesignValidationReport:
             )
         )
 
-    def extend(self, other: "DesignValidationReport", *, prefix: str | None = None) -> None:
+    def extend(self, other: DesignValidationReport, *, prefix: str | None = None) -> None:
         for issue in other.issues:
             code = f"{prefix}.{issue.code}" if prefix else issue.code
             self.issues.append(

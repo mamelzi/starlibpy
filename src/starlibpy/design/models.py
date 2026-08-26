@@ -218,7 +218,7 @@ class StudyDesign:
         )
 
     @classmethod
-    def from_dict(cls, data: Mapping[str, Any]) -> "StudyDesign":
+    def from_dict(cls, data: Mapping[str, Any]) -> StudyDesign:
         payload = dict(data)
         payload.pop("object_type", None)
         payload.pop("schema_version", None)
@@ -252,12 +252,12 @@ class StudyDesign:
 
         return validate_study_design(self, data)
 
-    def summary(self, data: pd.DataFrame | None = None) -> "StudyDesignSummaryResult":
+    def summary(self, data: pd.DataFrame | None = None) -> StudyDesignSummaryResult:
         from .study import summarize_study_design
 
         return summarize_study_design(self, data=data)
 
-    def create_analysis(self, **kwargs: Any) -> "AnalysisDesign":
+    def create_analysis(self, **kwargs: Any) -> AnalysisDesign:
         from .analysis import define_analysis_design
 
         return define_analysis_design(study_design=self, **kwargs)
@@ -271,7 +271,7 @@ class StudyDesign:
 
         return list_compatible_analyses(self, outcome=outcome, data=data)
 
-    def copy_with(self, **changes: Any) -> "StudyDesign":
+    def copy_with(self, **changes: Any) -> StudyDesign:
         clone = deepcopy(self)
         for key, value in changes.items():
             if not hasattr(clone, key):
@@ -361,7 +361,7 @@ class AnalysisDesign:
         return json_safe(payload)
 
     @classmethod
-    def from_dict(cls, data: Mapping[str, Any]) -> "AnalysisDesign":
+    def from_dict(cls, data: Mapping[str, Any]) -> AnalysisDesign:
         payload = dict(data)
         payload.pop("object_type", None)
         payload.pop("schema_version", None)
@@ -393,7 +393,7 @@ class AnalysisDesign:
         self,
         data: pd.DataFrame,
         study_design: StudyDesign | None = None,
-    ) -> "AnalysisPopulation":
+    ) -> AnalysisPopulation:
         from .analysis import derive_analysis_population
 
         return derive_analysis_population(data, self, study_design=study_design)
@@ -419,7 +419,7 @@ class AnalysisDesign:
             self, study_design=study_design, data=data, language=language
         )
 
-    def copy_with(self, **changes: Any) -> "AnalysisDesign":
+    def copy_with(self, **changes: Any) -> AnalysisDesign:
         clone = deepcopy(self)
         for key, value in changes.items():
             if not hasattr(clone, key):

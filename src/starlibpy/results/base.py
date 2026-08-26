@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from collections.abc import Iterator, Mapping
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timezone, UTC
 from importlib import metadata as importlib_metadata
 from pathlib import Path
 from typing import Any
@@ -49,7 +49,7 @@ def software_versions() -> dict[str, str]:
 
 
 def utc_now_iso() -> str:
-    return datetime.now(timezone.utc).isoformat()
+    return datetime.now(UTC).isoformat()
 
 
 def _json_safe(value: Any) -> Any:
@@ -325,11 +325,11 @@ class StarTable:
 
         return export_table(self, path, **kwargs)
 
-    def add_note(self, note: str) -> "StarTable":
+    def add_note(self, note: str) -> StarTable:
         self.notes = (*self.notes, str(note))
         return self
 
-    def add_caption(self, caption: str) -> "StarTable":
+    def add_caption(self, caption: str) -> StarTable:
         self.caption = str(caption)
         return self
 
@@ -355,6 +355,6 @@ class StarFigure:
 
         return export_plot(self, path, **kwargs)
 
-    def add_caption(self, caption: str) -> "StarFigure":
+    def add_caption(self, caption: str) -> StarFigure:
         self.caption = str(caption)
         return self
