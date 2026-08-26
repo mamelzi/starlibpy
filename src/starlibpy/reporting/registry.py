@@ -5,7 +5,6 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Any
 
-
 _TABLE_RENDERERS: dict[str, Callable[..., Any]] = {}
 _PLOT_RENDERERS: dict[tuple[str, str], Callable[..., Any]] = {}
 

@@ -694,7 +694,7 @@ def validate_analysis_design(
 
     if analysis.analysis_type == "survival" and analysis.event_variable:
         observed = set(data[analysis.event_variable].dropna().unique().tolist())
-        if not observed <= {0, 1, False, True}:
+        if not observed <= {0, 1}:
             report.add(
                 "analysis.nonbinary_event",
                 "error",
