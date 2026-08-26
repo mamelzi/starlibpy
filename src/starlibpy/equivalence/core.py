@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from starlibpy.estimation import ci_difference_means, ci_difference_proportions
+from starlibpy.estimation import ci_difference_proportions
 from starlibpy.results import EquivalenceResult, NonInferiorityResult
 
 

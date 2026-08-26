@@ -14,7 +14,7 @@ Royston P, Parmar MKB. BMC Med Res Methodol. 2013;13:152.
 from __future__ import annotations
 
 import warnings
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Mapping, Sequence
 from typing import Any
 
 import numpy as np

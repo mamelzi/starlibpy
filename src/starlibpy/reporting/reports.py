@@ -7,9 +7,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from starlibpy.results import StarFigure, StarTable
 
-from .exporters import export_plot, export_table
 from .plots import plot_result
 from .tables import render_table
 

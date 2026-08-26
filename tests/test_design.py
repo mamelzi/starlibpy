@@ -7,7 +7,6 @@ import pandas as pd
 import pytest
 
 from starlibpy.design import (
-    ClusterSpec,
     PairingSpec,
     RepeatedMeasuresSpec,
     StudyDesign,

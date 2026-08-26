@@ -6,7 +6,7 @@ Project Author: Dr. M.A. Melzi, MD
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable
 from typing import Any
 
 import numpy as np

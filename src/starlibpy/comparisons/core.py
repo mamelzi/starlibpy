@@ -7,7 +7,7 @@ Statistical engines: SciPy and statsmodels.
 from __future__ import annotations
 
 import itertools
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Iterable, Sequence
 from typing import Any
 
 import numpy as np

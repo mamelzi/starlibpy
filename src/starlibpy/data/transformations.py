@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import math
 import unicodedata
 from calendar import monthrange
 from collections.abc import Iterable, Mapping, Sequence
@@ -12,7 +11,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from ._utils import ensure_dataframe, json_safe, normalize_name, utc_now_iso
+from ._utils import ensure_dataframe, utc_now_iso
 from .audit import audit_transformations
 from .constants import (
     DEFAULT_TIME_FACTORS_IN_SECONDS,

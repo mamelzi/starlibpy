@@ -7,7 +7,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from starlibpy.results import StarResult, StarTable
+from starlibpy.results import StarTable
 
 from .registry import get_table_renderer, register_table_renderer
 from .templates import get_table_template, get_theme

@@ -15,7 +15,7 @@ NumPy, pandas, SciPy, and statsmodels development teams.
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Mapping, Sequence
 from typing import Any
 
 import numpy as np
