@@ -174,9 +174,11 @@ def _estimate_renderer(result, name, template, theme, language=None, **kwargs):
     if estimate and low and high:
         out["Estimate [CI]"] = [
             template.missing_symbol
-            if pd.isna(e)
-            else f"{e:.{template.decimals}f} [{l:.{template.decimals}f}–{h:.{template.decimals}f}]"
-            for e, l, h in zip(out[estimate], out[low], out[high])
+            if pd.isna(estimate_value)
+            else f"{estimate_value:.{template.decimals}f} [{lower_bound:.{template.decimals}f}–{upper_bound:.{template.decimals}f}]"
+            for estimate_value, lower_bound, upper_bound in zip(
+                out[estimate], out[low], out[high], strict=True
+            )
         ]
     if "p_value" in out:
         out["p-value"] = out.p_value.map(lambda x: _pvalue(x, template))

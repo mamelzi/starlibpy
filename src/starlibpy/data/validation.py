@@ -542,7 +542,7 @@ def validate_dataset(
             continue
         compiled = re.compile(pattern)
         valid = data[column].isna() | data[column].astype(str).map(
-            lambda value: bool(compiled.fullmatch(value))
+            lambda value, compiled=compiled: bool(compiled.fullmatch(value))
         )
         mask = ~valid
         if mask.any():

@@ -277,7 +277,7 @@ def sensitivity_analysis(
         list(labels) if labels is not None else [f"analysis_{i + 1}" for i in range(len(analyses))]
     )
     rows = []
-    for label, fn in zip(labels, analyses):
+    for label, fn in zip(labels, analyses, strict=True):
         result = fn()
         table = result.get_table()
         row = table.iloc[0].to_dict() if not table.empty else {}

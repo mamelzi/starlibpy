@@ -76,7 +76,7 @@ def prepare_recist_data(
                 }
             )
         ]
-        for ec, dc in zip(eval_cols, eval_date_cols):
+        for ec, dc in zip(eval_cols, eval_date_cols, strict=True):
             frames.append(
                 pd.DataFrame(
                     {

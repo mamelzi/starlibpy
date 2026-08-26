@@ -161,7 +161,7 @@ def test_missing_data_assumption_report_detects_observed_association():
     result = check_missing_data_assumptions(df, target_columns=["x"], predictors=["group", "z"])
     target = result.get_table("targets").iloc[0]
     assert target["conclusion"] == "evidence_against_mcar"
-    assert result.get_table("overall").iloc[0]["identifies_mar_vs_mnar"] == False
+    assert not bool(result.get_table("overall").iloc[0]["identifies_mar_vs_mnar"])
 
 
 def test_detect_outliers_is_non_destructive():

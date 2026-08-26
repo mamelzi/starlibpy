@@ -112,7 +112,7 @@ def _boxplot(result, kind, template, theme, **kwargs):
             labels.append(str(var))
     fig, ax = plt.subplots(figsize=kwargs.get("figsize", template.figsize))
     bp = ax.boxplot(groups, tick_labels=labels, patch_artist=True)
-    for patch, c in zip(bp["boxes"], theme.palette.colors):
+    for patch, c in zip(bp["boxes"], theme.palette.colors, strict=False):
         patch.set_facecolor(c)
     _finish(
         fig,
@@ -799,7 +799,7 @@ def _recist_spider(result, kind, template, theme, **kwargs):
         "trajectories" if "trajectories" in result.available_tables else "assessments"
     )
     fig, ax = plt.subplots(figsize=kwargs.get("figsize", template.figsize))
-    for i, (pid, g) in enumerate(table.groupby("patient_id", sort=False)):
+    for i, (_pid, g) in enumerate(table.groupby("patient_id", sort=False)):
         ax.plot(
             g.date,
             g.change_from_baseline_percent,

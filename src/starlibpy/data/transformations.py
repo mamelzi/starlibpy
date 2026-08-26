@@ -407,7 +407,7 @@ def _calendar_months(start: pd.Series, end: pd.Series) -> pd.Series:
     e = end.loc[valid]
     base = (e.dt.year - s.dt.year) * 12 + (e.dt.month - s.dt.month)
     fractions = []
-    for s_value, e_value in zip(s, e):
+    for s_value, e_value in zip(s, e, strict=True):
         denominator = monthrange(s_value.year, s_value.month)[1]
         fractions.append((e_value.day - s_value.day) / denominator)
     result.loc[valid] = base.to_numpy(dtype=float) + np.asarray(fractions)

@@ -181,7 +181,7 @@ def analyze_missingness_patterns(
             continue
         flags = [char == "1" for char in pattern]
         missing_variables = tuple(
-            column for column, is_missing in zip(selected, flags) if is_missing
+            column for column, is_missing in zip(selected, flags, strict=True) if is_missing
         )
         pattern_rows.append(
             {
@@ -500,7 +500,7 @@ def check_missing_data_assumptions(
         if target_end > target_start:
             pvals = [row["p_value"] for row in rows[target_start:target_end]]
             adjusted = adjust_pvalues(pvals, correction)
-            for row, p_adj in zip(rows[target_start:target_end], adjusted):
+            for row, p_adj in zip(rows[target_start:target_end], adjusted, strict=True):
                 row["p_adjusted"] = p_adj
                 row["significant"] = bool(np.isfinite(p_adj) and p_adj < alpha)
             n_tested = int(np.isfinite(adjusted).sum())

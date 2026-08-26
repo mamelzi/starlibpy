@@ -424,7 +424,10 @@ def estimated_marginal_means(
     """Compute model-based marginal predictions over a factor grid."""
     levels = {f: list((at or {}).get(f, pd.unique(data[f].dropna()))) for f in factors}
     grid = pd.DataFrame(
-        [dict(zip(factors, v)) for v in itertools.product(*(levels[f] for f in factors))]
+        [
+            dict(zip(factors, v, strict=True))
+            for v in itertools.product(*(levels[f] for f in factors))
+        ]
     )
     # Add non-factor model variables at mean/mode where possible.
     for name in getattr(model_result.model, "exog_names", []):

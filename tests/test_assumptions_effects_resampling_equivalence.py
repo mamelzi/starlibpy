@@ -86,7 +86,10 @@ def test_cluster_and_stratified_bootstrap():
             "value": np.arange(24, dtype=float),
         }
     )
-    statistic = lambda frame: float(frame["value"].mean())
+
+    def statistic(frame):
+        return float(frame["value"].mean())
+
     clustered = slp.cluster_bootstrap(data, "cluster", statistic, n_resamples=100, random_state=2)
     stratified = slp.stratified_bootstrap(
         data, "stratum", statistic, n_resamples=100, random_state=2

@@ -41,8 +41,8 @@ def export_table(
         t.style = "Table Grid"
         for i, c in enumerate(data.columns):
             t.rows[0].cells[i].text = str(c)
-        for _, row in data.iterrows():
-            cells = t.add_row().cells
+        for _ in range(len(data)):
+            t.add_row()
         # populate in a second clear loop to avoid stale row reference
         for ri, (_, row) in enumerate(data.iterrows(), start=1):
             for ci, v in enumerate(row):

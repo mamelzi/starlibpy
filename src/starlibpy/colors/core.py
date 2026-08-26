@@ -141,8 +141,8 @@ def adjust_brightness(color: Any, factor: float) -> str:
     if factor < 0:
         raise ValueError("factor must be non-negative.")
     r, g, b = hex_to_rgb(color, normalized=True)
-    h, l, s = colorsys.rgb_to_hls(r, g, b)
-    return _hex_from_rgb01(colorsys.hls_to_rgb(h, min(1, l * factor), s))
+    h, lightness_value, s = colorsys.rgb_to_hls(r, g, b)
+    return _hex_from_rgb01(colorsys.hls_to_rgb(h, min(1, lightness_value * factor), s))
 
 
 def adjust_saturation(color: Any, factor: float) -> str:
@@ -150,8 +150,8 @@ def adjust_saturation(color: Any, factor: float) -> str:
     if factor < 0:
         raise ValueError("factor must be non-negative.")
     r, g, b = hex_to_rgb(color, normalized=True)
-    h, l, s = colorsys.rgb_to_hls(r, g, b)
-    return _hex_from_rgb01(colorsys.hls_to_rgb(h, l, min(1, s * factor)))
+    h, lightness_value, s = colorsys.rgb_to_hls(r, g, b)
+    return _hex_from_rgb01(colorsys.hls_to_rgb(h, lightness_value, min(1, s * factor)))
 
 
 def invert_color(color: Any) -> str:
@@ -182,7 +182,7 @@ def generate_palette(
         raise ValueError("n must be >=1.")
     base = normalize_color(base_color)
     r, g, b = hex_to_rgb(base, normalized=True)
-    h, l, s = colorsys.rgb_to_hls(r, g, b)
+    h, lightness_value, s = colorsys.rgb_to_hls(r, g, b)
     rng = np.random.default_rng(seed)
     if scheme in {"qualitative", "contrast"}:
         hues = (h + np.arange(n) / n) % 1
@@ -191,15 +191,15 @@ def generate_palette(
         ss = np.full(n, saturation)
     elif scheme == "analogous":
         hues = (h + np.linspace(-1 / 12, 1 / 12, n)) % 1
-        ls = np.full(n, l)
+        ls = np.full(n, lightness_value)
         ss = np.full(n, s)
     elif scheme == "complementary":
         hues = (h + np.arange(n) * 0.5) % 1
-        ls = np.clip(l + np.linspace(-0.15, 0.15, n), 0.15, 0.85)
+        ls = np.clip(lightness_value + np.linspace(-0.15, 0.15, n), 0.15, 0.85)
         ss = np.full(n, s)
     elif scheme == "triadic":
         hues = (h + np.arange(n) / 3) % 1
-        ls = np.clip(l + np.linspace(-0.12, 0.12, n), 0.15, 0.85)
+        ls = np.clip(lightness_value + np.linspace(-0.12, 0.12, n), 0.15, 0.85)
         ss = np.full(n, s)
     elif scheme == "sequential":
         hues = np.full(n, h)
@@ -209,7 +209,7 @@ def generate_palette(
         raise ValueError("Unsupported palette scheme.")
     return tuple(
         _hex_from_rgb01(colorsys.hls_to_rgb(float(hh), float(ll), float(sss)))
-        for hh, ll, sss in zip(hues, ls, ss)
+        for hh, ll, sss in zip(hues, ls, ss, strict=True)
     )
 
 
@@ -329,7 +329,7 @@ def closest_color_name(color: Any) -> str:
         distance = math.inf
         for name in names:
             candidate = webcolors.name_to_rgb(name)
-            d = sum((a - b) ** 2 for a, b in zip(rgb, candidate))
+            d = sum((a - b) ** 2 for a, b in zip(rgb, candidate, strict=True))
             if d < distance:
                 distance = d
                 best = name

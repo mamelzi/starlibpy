@@ -117,7 +117,7 @@ def _simple_impute_once(
             if group_by:
                 output[column] = output.groupby(list(group_by), dropna=False, sort=False)[
                     column
-                ].transform(lambda s: s.ffill() if method == "ffill" else s.bfill())
+                ].transform(lambda s, method=method: s.ffill() if method == "ffill" else s.bfill())
             else:
                 output[column] = (
                     output[column].ffill() if method == "ffill" else output[column].bfill()
