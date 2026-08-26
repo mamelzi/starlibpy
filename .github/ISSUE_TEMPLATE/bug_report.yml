@@ -1,0 +1,77 @@
+name: Bug report
+description: Report a reproducible software or statistical defect
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a problem. Use synthetic data only.
+        For security-sensitive or result-altering defects, follow SECURITY.md.
+  - type: input
+    id: version
+    attributes:
+      label: Starlibpy version
+      placeholder: "0.3.0b2"
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      placeholder: "3.13.1"
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: "Windows 11 / Ubuntu 24.04 / macOS"
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: Installation method
+      options:
+        - PyPI
+        - TestPyPI
+        - Wheel
+        - Editable source installation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: example
+    attributes:
+      label: Minimal reproducible example
+      description: Include code and synthetic data only.
+      render: python
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behavior and traceback
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: impact
+    attributes:
+      label: Potential scientific or clinical impact
+      description: State whether estimates, intervals, p-values, classifications, or outputs may change.
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I removed confidential and identifying information.
+          required: true
+        - label: I searched existing issues.
+          required: true

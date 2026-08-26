@@ -1,0 +1,45 @@
+name: Statistical method request
+description: Propose a statistical method or analytical extension
+title: "[Method]: "
+labels: ["enhancement"]
+body:
+  - type: input
+    id: method
+    attributes:
+      label: Method name
+    validations:
+      required: true
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Research question and intended use
+    validations:
+      required: true
+  - type: textarea
+    id: design
+    attributes:
+      label: Supported study designs and outcome types
+    validations:
+      required: true
+  - type: textarea
+    id: outputs
+    attributes:
+      label: Required estimates, intervals, effect sizes, diagnostics, tables, and plots
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: Methodological references
+      description: Provide complete, valid references or DOI identifiers.
+    validations:
+      required: true
+  - type: textarea
+    id: reference_software
+    attributes:
+      label: Reference implementations
+      description: Identify R, SAS, Stata, Python, or published worked examples suitable for validation.
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Proposed dependencies and licenses
