@@ -6,6 +6,9 @@
 **Recommended import:** `import starlibpy as slp`  
 **Release:** `0.3.0b2` — publication-candidate beta
 
+**Repository:** https://github.com/mamelzi/starlibpy
+**Issues:** https://github.com/mamelzi/starlibpy/issues
+
 Starlibpy is a modular Python library for study-design specification, data
 profiling and quality control, statistical analysis, diagnostic checking,
 scientific visualization, and publication-ready reporting. It is intended for

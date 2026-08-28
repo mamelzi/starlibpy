@@ -9,6 +9,8 @@ authors:
     given-names: M. A.
     name-suffix: MD
 license: MIT
+repository-code: "https://github.com/mamelzi/starlibpy"
+url: "https://github.com/mamelzi/starlibpy"
 abstract: >-
   Starlibpy is a modular Python library for study-design specification,
   data quality, statistical analysis, diagnostics, scientific visualization,

@@ -40,6 +40,12 @@ dependencies = [
   "patsy>=0.5.6",
 ]
 
+[project.urls]
+Homepage = "https://github.com/mamelzi/starlibpy"
+Repository = "https://github.com/mamelzi/starlibpy"
+Issues = "https://github.com/mamelzi/starlibpy/issues"
+Changelog = "https://github.com/mamelzi/starlibpy/blob/main/CHANGELOG.md"
+
 [project.optional-dependencies]
 data = [
   "scikit-learn>=1.3",
