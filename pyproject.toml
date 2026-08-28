@@ -1,16 +1,19 @@
 [build-system]
-requires = ["setuptools>=69", "wheel"]
+requires = ["setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "starlibpy"
-version = "0.3.0b1"
+dynamic = ["version"]
 description = "Statistical Tools for Academic Research Library"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [
+  {name = "Dr. M.A. Melzi, MD"}
+]
+maintainers = [
   {name = "Dr. M.A. Melzi, MD"}
 ]
 keywords = [
@@ -36,6 +39,12 @@ dependencies = [
   "statsmodels>=0.14",
   "patsy>=0.5.6",
 ]
+
+[project.urls]
+Homepage = "https://github.com/mamelzi/starlibpy"
+Repository = "https://github.com/mamelzi/starlibpy"
+Issues = "https://github.com/mamelzi/starlibpy/issues"
+Changelog = "https://github.com/mamelzi/starlibpy/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 data = [
@@ -84,6 +93,7 @@ dev = [
   "ruff>=0.6",
   "mypy>=1.11",
   "build>=1.2",
+  "twine>=6.0",
 ]
 
 [tool.setuptools]
@@ -95,6 +105,9 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 starlibpy = ["py.typed", "**/py.typed"]
+
+[tool.setuptools.dynamic]
+version = {attr = "starlibpy._version.__version__"}
 
 [tool.pytest.ini_options]
 addopts = "-ra"

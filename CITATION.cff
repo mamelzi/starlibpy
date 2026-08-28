@@ -2,13 +2,15 @@ cff-version: 1.2.0
 message: "If you use Starlibpy, cite this software and the upstream scientific libraries used by your analysis."
 title: "Starlibpy: Statistical Tools for Academic Research Library"
 type: software
-version: "0.3.0b1"
-date-released: 2026-08-24
+version: "0.3.0b2"
+date-released: 2026-08-26
 authors:
   - family-names: Melzi
     given-names: M. A.
     name-suffix: MD
 license: MIT
+repository-code: "https://github.com/mamelzi/starlibpy"
+url: "https://github.com/mamelzi/starlibpy"
 abstract: >-
   Starlibpy is a modular Python library for study-design specification,
   data quality, statistical analysis, diagnostics, scientific visualization,

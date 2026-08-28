@@ -1,0 +1,104 @@
+name: Starlibpy CI
+
+on:
+  push:
+    branches:
+      - main
+      - "release/**"
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test (${{ matrix.os }}, Python ${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python-version: "3.11"
+          - os: ubuntu-latest
+            python-version: "3.12"
+          - os: ubuntu-latest
+            python-version: "3.13"
+          - os: windows-latest
+            python-version: "3.13"
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install Starlibpy and development dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --editable ".[full,dev]"
+
+      - name: Check dependencies
+        run: python -m pip check
+
+      - name: Lint
+        run: python -m ruff check src tests
+
+      - name: Check formatting
+        run: python -m ruff format --check src tests
+
+      - name: Run tests
+        run: python -m pytest -q
+
+  build:
+    name: Build and validate distributions
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install build twine
+
+      - name: Build wheel and source distribution
+        run: python -m build
+
+      - name: Validate distribution metadata
+        run: python -m twine check dist/*
+
+      - name: Install built wheel
+        run: python -m pip install --force-reinstall dist/*.whl
+
+      - name: Smoke-test installed wheel
+        run: |
+          cd "${RUNNER_TEMP}"
+          python -c "import starlibpy as slp; assert slp.__version__ == '0.3.0b2'; assert len(slp.__all__) == 364; print(slp.__version__, len(slp.__all__))"
+
+      - name: Store distributions
+        uses: actions/upload-artifact@v5
+        with:
+          name: starlibpy-distributions
+          path: dist/
+          if-no-files-found: error

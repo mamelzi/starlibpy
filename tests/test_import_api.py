@@ -9,7 +9,7 @@ def test_canonical_identity_and_import_api():
         slp.__project_full_name__ == "Starlibpy — Statistical Tools for Academic Research Library"
     )
     assert slp.__author__ == "Dr. M.A. Melzi, MD"
-    assert slp.__version__ == "0.3.0b1"
+    assert slp.__version__ == "0.3.0b2"
     assert callable(slp.describe_continuous)
     assert callable(slp.profile_dataset)
     assert callable(slp.render_table)

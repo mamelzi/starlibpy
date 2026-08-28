@@ -7,6 +7,7 @@ such as randomization, blinding, sampling, and temporality remain explicitly
 user-declared.
 """
 
+from .._version import __version__ as _PACKAGE_VERSION
 from .analysis import (
     check_analysis_requirements,
     define_analysis_design,
@@ -75,7 +76,7 @@ from .validation import (
     validate_variable_spec,
 )
 
-__version__ = "0.3.0b1"
+__version__ = _PACKAGE_VERSION
 
 __all__ = [
     "StudyDesign",

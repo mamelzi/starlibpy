@@ -4,7 +4,10 @@
 
 **Project author:** Dr. M.A. Melzi, MD  
 **Recommended import:** `import starlibpy as slp`  
-**Release:** `0.3.0b1` — complete beta architecture
+**Release:** `0.3.0b2` — publication-candidate beta
+
+**Repository:** https://github.com/mamelzi/starlibpy
+**Issues:** https://github.com/mamelzi/starlibpy/issues
 
 Starlibpy is a modular Python library for study-design specification, data
 profiling and quality control, statistical analysis, diagnostic checking,
@@ -203,6 +206,10 @@ A plugin can also use `register_table_renderer()` and
 - Fine–Gray regression and Gray's test require a registered competing-risks
   plugin in this beta. Starlibpy does not silently substitute a different test.
 
+## Scientific and clinical disclaimer
+
+Starlibpy supports academic, methodological, epidemiological, biomedical, and clinical research workflows. Its outputs must be interpreted in light of the study design, data quality, statistical assumptions, uncertainty, and applicable scientific or regulatory guidance. The library does not replace independent statistical review, clinical judgment, regulatory validation, or protocol-specific adjudication.
+
 ## Migration from the former flat package
 
 Selected old names remain in `starlibpy.legacy` with a `DeprecationWarning`.
@@ -214,7 +221,7 @@ The new API uses stable snake-case names and typed result objects. See
 Use the release metadata in `CITATION.cff`:
 
 > Melzi, M.A. *Starlibpy: Statistical Tools for Academic Research Library*.
-> Version 0.3.0b1.
+> Version 0.3.0b2.
 
 Also cite the scientific libraries and original methods directly used by your
 analysis. A reusable bibliography is supplied in `REFERENCES.bib`.
