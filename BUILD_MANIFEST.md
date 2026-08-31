@@ -1,8 +1,8 @@
 # Build manifest
 
-**Project:** Starlibpy — Statistical Tools for Academic Research Library  
-**Version:** 0.3.0b1  
-**Project author:** Dr. M.A. Melzi, MD  
+**Project:** Starlibpy ? Statistical Tools for Academic Research Library
+**Version:** 0.3.0b2
+**Project author:** Dr. M.A. Melzi, MD
 **Recommended import:** `import starlibpy as slp`
 
 ## Source composition
@@ -10,11 +10,11 @@
 | Item | Count |
 |---|---:|
 | Python source files | 77 |
-| Source lines | 14567 |
+| Source lines | 22251 |
 | Root-level public API symbols | 364 |
-| Public functions declared by submodules | 314 |
-| Public classes declared by submodules | 166 |
-| Public constants declared by submodules | 2 |
+| Public functions declared by submodules | 364 |
+| Public classes declared by submodules | 59 |
+| Public constants declared by submodules | 57 |
 | Test files | 12 |
 | Executable examples | 3 |
 | Automated tests passing | 95 |
@@ -48,13 +48,11 @@
 
 - PEP 517/518 `pyproject.toml` configuration;
 - MIT license and third-party license inventory;
-- `CITATION.cff`, project authorship, acknowledgments, and BibTeX references;
+- `CITATION.cff`, authorship, acknowledgments and references;
 - source package under `src/starlibpy`;
 - typed marker `py.typed`;
 - automated tests and executable examples;
-- architecture, API, dependency, extension, migration, and status documents;
+- architecture, API, dependency, extension, migration and status documents;
 - wheel and source distribution generated from this tree.
 
-Cryptographic hashes are provided separately in the release-level
-`SHA256SUMS.txt` file so that including this manifest in the source archive does
-not create a circular checksum dependency.
+Cryptographic hashes are provided separately in `SHA256SUMS.txt`.
