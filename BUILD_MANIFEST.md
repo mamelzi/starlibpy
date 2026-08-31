@@ -1,6 +1,6 @@
 # Build manifest
 
-**Project:** Starlibpy ? Statistical Tools for Academic Research Library
+**Project:** Starlibpy — Statistical Tools for Academic Research Library
 **Version:** 0.3.0b2
 **Project author:** Dr. M.A. Melzi, MD
 **Recommended import:** `import starlibpy as slp`
