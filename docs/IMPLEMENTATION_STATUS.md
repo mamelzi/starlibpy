@@ -1,4 +1,4 @@
-# Implementation status — 0.3.0b2
+# Implementation status — 0.3.0b3
 
 ## Stable beta families
 

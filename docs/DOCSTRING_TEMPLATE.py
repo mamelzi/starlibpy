@@ -14,7 +14,7 @@ def example_function(data, *, confidence_level=0.95):
 
     Project Author
     --------------
-    Dr. M.A. Melzi, MD
+    Mohamed Aimene Melzi, MD
 
     Parameters
     ----------
@@ -37,7 +37,7 @@ def example_function(data, *, confidence_level=0.95):
     Software Credits
     ----------------
     The Starlibpy-specific architecture and implementation are authored by
-    Dr. M.A. Melzi, MD. This function may build on NumPy, pandas, SciPy,
+    Mohamed Aimene Melzi, MD. This function may build on NumPy, pandas, SciPy,
     statsmodels, and other dependencies identified by the result metadata.
     Upstream authors retain authorship of their respective projects.
 

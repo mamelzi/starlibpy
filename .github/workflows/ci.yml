@@ -94,7 +94,7 @@ jobs:
       - name: Smoke-test installed wheel
         run: |
           cd "${RUNNER_TEMP}"
-          python -c "import starlibpy as slp; assert slp.__version__ == '0.3.0b2'; assert len(slp.__all__) == 364; print(slp.__version__, len(slp.__all__))"
+          python -c "import starlibpy as slp; assert slp.__version__ == '0.3.0b3'; assert len(slp.__all__) == 364; print(slp.__version__, len(slp.__all__))"
 
       - name: Store distributions
         uses: actions/upload-artifact@v7

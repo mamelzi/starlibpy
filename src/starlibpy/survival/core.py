@@ -1,7 +1,7 @@
 """Time-to-event analyses with a statsmodels backend.
 
 Starlibpy — Statistical Tools for Academic Research Library
-Project Author: Dr. M.A. Melzi, MD
+Project Author: Mohamed Aimene Melzi, MD
 
 References
 ----------

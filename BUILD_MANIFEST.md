@@ -1,8 +1,9 @@
 # Build manifest
 
 **Project:** Starlibpy — Statistical Tools for Academic Research Library
-**Version:** 0.3.0b2
-**Project author:** Dr. M.A. Melzi, MD
+**Version:** 0.3.0b3
+**Project author:** Mohamed Aimene Melzi, MD
+**ORCID:** https://orcid.org/0000-0002-4316-9872
 **Recommended import:** `import starlibpy as slp`
 
 ## Source composition
@@ -49,6 +50,7 @@
 - PEP 517/518 `pyproject.toml` configuration;
 - MIT license and third-party license inventory;
 - `CITATION.cff`, authorship, acknowledgments and references;
+- author ORCID metadata for scientific identification;
 - source package under `src/starlibpy`;
 - typed marker `py.typed`;
 - automated tests and executable examples;

@@ -1,7 +1,7 @@
 # Public API inventory
 
-**Project:** Starlibpy — Statistical Tools for Academic Research Library  
-**Author:** Dr. M.A. Melzi, MD  
+**Project:** Starlibpy — Statistical Tools for Academic Research Library
+**Author:** Mohamed Aimene Melzi, MD
 **Recommended import:** `import starlibpy as slp`
 
 This inventory is generated from the explicit public APIs declared by each packaged submodule. Specialized names remain available through their modules even when a shorter root-level entry point also exists.

@@ -11,10 +11,10 @@ requires-python = ">=3.11"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [
-  {name = "Dr. M.A. Melzi, MD"}
+  {name = "Mohamed Aimene Melzi, MD"}
 ]
 maintainers = [
-  {name = "Dr. M.A. Melzi, MD"}
+  {name = "Mohamed Aimene Melzi, MD"}
 ]
 keywords = [
   "statistics", "academic research", "biomedical research", "clinical research",
@@ -45,6 +45,7 @@ Homepage = "https://github.com/mamelzi/starlibpy"
 Repository = "https://github.com/mamelzi/starlibpy"
 Issues = "https://github.com/mamelzi/starlibpy/issues"
 Changelog = "https://github.com/mamelzi/starlibpy/blob/main/CHANGELOG.md"
+"Author ORCID" = "https://orcid.org/0000-0002-4316-9872"
 
 [project.optional-dependencies]
 data = [

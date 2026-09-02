@@ -1,6 +1,6 @@
 """Simple and stratified comparisons for Starlibpy.
 
-Project Author: Dr. M.A. Melzi, MD.
+Project Author: Mohamed Aimene Melzi, MD.
 Statistical engines: SciPy and statsmodels.
 """
 

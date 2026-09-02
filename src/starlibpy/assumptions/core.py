@@ -1,7 +1,7 @@
 """Assumption checking and explainable method recommendation.
 
 Starlibpy — Statistical Tools for Academic Research Library
-Project Author: Dr. M.A. Melzi, MD
+Project Author: Mohamed Aimene Melzi, MD
 """
 
 from __future__ import annotations

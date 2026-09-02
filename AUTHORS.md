@@ -2,7 +2,7 @@
 
 ## Project creator and principal author
 
-**Dr. M.A. Melzi, MD**
+**Mohamed Aimene Melzi, MD**
 
 Creator of **Starlibpy — Statistical Tools for Academic Research Library**;
 author of its scientific architecture, public API, integration logic, result-object

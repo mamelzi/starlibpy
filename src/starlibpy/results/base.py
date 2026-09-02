@@ -6,7 +6,7 @@ Starlibpy — Statistical Tools for Academic Research Library
 
 Project Author
 --------------
-Dr. M.A. Melzi, MD
+Mohamed Aimene Melzi, MD
 """
 
 from __future__ import annotations
@@ -110,7 +110,7 @@ class StarResult:
             "project_full_name",
             "Starlibpy — Statistical Tools for Academic Research Library",
         )
-        self.metadata.setdefault("project_author", "Dr. M.A. Melzi, MD")
+        self.metadata.setdefault("project_author", "Mohamed Aimene Melzi, MD")
         self.metadata.setdefault("generated_at", utc_now_iso())
         self.metadata.setdefault("software", software_versions())
         if self.default_table is None and len(self.tables) == 1:
