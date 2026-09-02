@@ -18,7 +18,7 @@
 - Twine metadata validation: passed
 - Isolated wheel installation: passed
 - Installed-package smoke tests: passed
-- GitHub Actions CI: pending validation after push
+- GitHub Actions CI: passed
 
 ## Isolated wheel validation
 
