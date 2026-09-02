@@ -2,9 +2,10 @@
 
 **Statistical Tools for Academic Research Library**
 
-**Project author:** Dr. M.A. Melzi, MD  
-**Recommended import:** `import starlibpy as slp`  
-**Release:** `0.3.0b2` — publication-candidate beta
+**Project author:** Mohamed Aimene Melzi, MD
+**ORCID:** https://orcid.org/0000-0002-4316-9872
+**Recommended import:** `import starlibpy as slp`
+**Release:** `0.3.0b3` — ORCID and archival beta
 
 **Repository:** https://github.com/mamelzi/starlibpy
 **Issues:** https://github.com/mamelzi/starlibpy/issues
@@ -221,7 +222,7 @@ The new API uses stable snake-case names and typed result objects. See
 Use the release metadata in `CITATION.cff`:
 
 > Melzi, M.A. *Starlibpy: Statistical Tools for Academic Research Library*.
-> Version 0.3.0b2.
+> Version 0.3.0b3.
 
 Also cite the scientific libraries and original methods directly used by your
 analysis. A reusable bibliography is supplied in `REFERENCES.bib`.

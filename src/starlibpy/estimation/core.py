@@ -6,7 +6,7 @@ Starlibpy — Statistical Tools for Academic Research Library
 
 Project Author
 --------------
-Dr. M.A. Melzi, MD
+Mohamed Aimene Melzi, MD
 
 Software Credits
 ----------------

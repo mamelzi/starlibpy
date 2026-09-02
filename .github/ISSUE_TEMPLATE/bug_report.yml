@@ -12,7 +12,7 @@ body:
     id: version
     attributes:
       label: Starlibpy version
-      placeholder: "0.3.0b2"
+      placeholder: "0.3.0b3"
     validations:
       required: true
   - type: input

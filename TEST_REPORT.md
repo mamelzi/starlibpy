@@ -1,10 +1,11 @@
-﻿# Test and validation report
+# Test and validation report
 
 **Project:** Starlibpy — Statistical Tools for Academic Research Library
-**Version:** 0.3.0b2
-**Release date:** 2026-08-26
-**Validation date:** 2026-08-31
-**Project author:** Dr. M.A. Melzi, MD
+**Version:** 0.3.0b3
+**Release date:** 2026-09-02
+**Validation date:** 2026-09-02
+**Project author:** Mohamed Aimene Melzi, MD
+**ORCID:** https://orcid.org/0000-0002-4316-9872
 
 ## Validation result
 
@@ -15,22 +16,23 @@
 - Wheel build: passed
 - Source distribution build: passed
 - Twine metadata validation: passed
-- GitHub Actions CI: passed
 - Isolated wheel installation: passed
 - Installed-package smoke tests: passed
+- GitHub Actions CI: passed
 
 ## Isolated wheel validation
 
-The wheel `starlibpy-0.3.0b2-py3-none-any.whl` was installed in a new
+The wheel `starlibpy-0.3.0b3-py3-none-any.whl` was installed in a new
 virtual environment outside the source tree.
 
 Installed package location:
 
-`C:\starlibpy-wheel-test\Lib\site-packages\starlibpy\__init__.py`
+`C:\starlibpy-b3-wheel-test\Lib\site-packages\starlibpy\__init__.py`
 
 Verified:
 
-- version: `0.3.0b2`
+- author: `Mohamed Aimene Melzi, MD`
+- version: `0.3.0b3`
 - root public API: 364 symbols
 - `anova`: callable
 - `describe_continuous`: callable
@@ -54,6 +56,8 @@ A functional `describe_continuous()` smoke test returned a
 
 ## CI matrix
 
+The repository CI configuration targets:
+
 | Operating system | Python |
 |---|---|
 | Ubuntu | 3.11 |
@@ -61,10 +65,12 @@ A functional `describe_continuous()` smoke test returned a
 | Ubuntu | 3.13 |
 | Windows | 3.13 |
 
+CI results for `0.3.0b3` will be confirmed after the release branch is pushed.
+
 ## Coverage statement
 
-Coverage percentages from `0.3.0b1` are not carried forward because
-coverage was not re-measured during the `0.3.0b2` release-validation cycle.
+Coverage percentages from earlier beta releases are not carried forward because
+coverage was not re-measured during the `0.3.0b3` release-validation cycle.
 
 ## Scientific limitations
 

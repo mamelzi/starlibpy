@@ -1,7 +1,7 @@
 """Equivalence and non-inferiority tests.
 
 Starlibpy — Statistical Tools for Academic Research Library
-Author: Dr. M.A. Melzi, MD
+Author: Mohamed Aimene Melzi, MD
 
 References
 ----------

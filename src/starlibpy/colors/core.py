@@ -1,7 +1,7 @@
 """Color, palette, contrast, and theme utilities.
 
 Starlibpy — Statistical Tools for Academic Research Library
-Project Author: Dr. M.A. Melzi, MD
+Project Author: Mohamed Aimene Melzi, MD
 
 The module avoids global random-state changes and normalizes public colors to
 uppercase six-digit hexadecimal strings.

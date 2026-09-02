@@ -1,7 +1,7 @@
 # Dependency and attribution policy
 
 **Project:** Starlibpy — Statistical Tools for Academic Research Library  
-**Project author:** Dr. M.A. Melzi, MD
+**Project author:** Mohamed Aimene Melzi, MD
 
 Starlibpy separates its mandatory scientific core from optional analysis,
 plotting, and export dependencies. Missing optional packages must not prevent
@@ -47,7 +47,7 @@ plotting, and export dependencies. Missing optional packages must not prevent
 
 The Starlibpy-specific architecture, public API, result-object model,
 integration logic, validation flow, reporting registry, and implementation are
-credited to **Dr. M.A. Melzi, MD**. Upstream authors retain authorship of their
+credited to **Mohamed Aimene Melzi, MD**. Upstream authors retain authorship of their
 respective projects and algorithms. Mentioning an upstream library does not
 imply endorsement of Starlibpy or responsibility for its outputs.
 
@@ -61,7 +61,7 @@ Every public analysis function should identify:
 
 1. the scientific operation;
 2. Starlibpy and its official full name;
-3. Dr. M.A. Melzi, MD as project author;
+3. Mohamed Aimene Melzi, MD as project author;
 4. inputs, outputs, assumptions, warnings, and reproducibility controls;
 5. the directly used upstream libraries;
 6. the original statistical method and software references when applicable.

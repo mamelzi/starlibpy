@@ -6,7 +6,7 @@ Recommended import
 
 Project Author
 --------------
-Dr. M.A. Melzi, MD
+Mohamed Aimene Melzi, MD
 """
 
 # Public modules remain directly accessible: slp.design, slp.data, slp.colors, etc.

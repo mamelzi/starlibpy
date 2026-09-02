@@ -1,6 +1,6 @@
 """Effect-size estimators for Starlibpy.
 
-Project Author: Dr. M.A. Melzi, MD.
+Project Author: Mohamed Aimene Melzi, MD.
 """
 
 from __future__ import annotations

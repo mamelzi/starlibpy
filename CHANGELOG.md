@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.3.0b3 — 2026-09-02
+
+Metadata and archival beta release.
+
+### Changed
+
+- Added canonical author identity: **Mohamed Aimene Melzi, MD**.
+- Added author ORCID: **https://orcid.org/0000-0002-4316-9872**.
+- Updated citation metadata for repository archiving and DOI generation.
+- Updated package version metadata from `0.3.0b2` to `0.3.0b3`.
+- No statistical-analysis behavior was intentionally changed in this release.
+
 ## 0.3.0b2 — 2026-08-26
 
 Publication-candidate cleanup of the 0.3.0 beta architecture.
